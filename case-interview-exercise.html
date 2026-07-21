@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Case Interview Exercise: BSA Prioritization &amp; Program Redesign | Emmanuel Adoga</title>
+<meta name="description" content="A live Business Systems Analyst case interview exercise: triage under competing priorities, integration failure response, and a full monthly-giving program redesign.">
+<style>
+  :root{
+    --bg:#fafaf9;--bg-alt:#f2f1ee;--ink:#1c1c1a;--ink-soft:#55534d;--line:#e4e2dc;
+    --accent:#2f5d50;--accent-soft:#eef3f1;--accent2:#b5793f;--card:#ffffff;--radius:10px;--maxw:1080px;
+    font-size:16px;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{font-family:"Segoe UI",-apple-system,BlinkMacSystemFont,"Helvetica Neue",Arial,sans-serif;background:var(--bg);color:var(--ink);line-height:1.6;-webkit-font-smoothing:antialiased;}
+  a{color:inherit;text-decoration:none;}
+  img{max-width:100%;display:block;border-radius:8px;}
+  .wrap{max-width:var(--maxw);margin:0 auto;padding:0 24px;}
+  section{padding:56px 0;}
+  h1,h2,h3{font-weight:600;letter-spacing:-0.01em;}
+
+  header.site-nav{position:sticky;top:0;z-index:50;background:rgba(250,250,249,0.92);backdrop-filter:saturate(180%) blur(8px);border-bottom:1px solid var(--line);}
+  .nav-inner{max-width:var(--maxw);margin:0 auto;padding:14px 24px;display:flex;align-items:center;justify-content:space-between;}
+  .nav-back{font-size:0.86rem;font-weight:600;color:var(--ink-soft);display:flex;align-items:center;gap:6px;}
+  .nav-back:hover{color:var(--accent);}
+  .nav-name{font-weight:700;font-size:0.95rem;}
+
+  .practice-banner{background:#fbf6ec;border-bottom:1px solid #ecdfc2;padding:10px 0;text-align:center;font-size:0.82rem;color:#7a5b1f;}
+
+  .hero{padding:60px 0 40px;border-bottom:1px solid var(--line);}
+  .kicker{font-size:0.78rem;text-transform:uppercase;letter-spacing:0.12em;color:var(--accent);font-weight:700;margin-bottom:14px;}
+  .hero h1{font-size:clamp(1.6rem,3.6vw,2.3rem);line-height:1.22;margin-bottom:16px;max-width:820px;}
+  .hero p.lede{font-size:1.02rem;color:var(--ink-soft);max-width:740px;}
+  .meta-row{display:flex;flex-wrap:wrap;gap:22px;margin-top:24px;font-size:0.86rem;color:var(--ink-soft);}
+  .meta-row b{color:var(--ink);}
+
+  .section-kicker{font-size:0.74rem;text-transform:uppercase;letter-spacing:0.1em;color:var(--accent);font-weight:700;margin-bottom:10px;}
+  h2.section-title{font-size:1.35rem;margin-bottom:6px;}
+  .section-sub{font-size:0.9rem;color:var(--accent2);font-weight:600;margin-bottom:16px;}
+  .prose{color:var(--ink-soft);max-width:780px;}
+  .prose p{margin-bottom:14px;}
+
+  .pull-quote{font-size:1.02rem;font-style:italic;color:var(--ink);border-left:3px solid var(--accent);padding:14px 20px;margin:22px 0;background:var(--bg-alt);border-radius:0 8px 8px 0;max-width:740px;}
+
+  .triage-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:20px;}
+  .triage-card{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:18px;}
+  .triage-card .ttag{font-size:0.66rem;font-weight:700;text-transform:uppercase;letter-spacing:0.06em;color:var(--accent);background:var(--accent-soft);padding:4px 10px;border-radius:999px;display:inline-block;margin-bottom:10px;}
+  .triage-card h3{font-size:0.92rem;margin-bottom:6px;}
+  .triage-card p{font-size:0.82rem;color:var(--ink-soft);}
+
+  .track-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:20px;}
+  .track-card{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:20px 22px;}
+  .track-card h3{font-size:0.92rem;margin-bottom:10px;color:var(--accent);}
+  .track-card ul{margin:0 0 0 18px;color:var(--ink-soft);font-size:0.85rem;}
+  .track-card li{margin-bottom:6px;}
+
+  .approach-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-top:22px;}
+  .approach-step{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:16px;}
+  .approach-step .n{font-size:0.72rem;font-weight:700;color:var(--accent);margin-bottom:6px;}
+  .approach-step h3{font-size:0.88rem;margin-bottom:6px;}
+  .approach-step p{font-size:0.8rem;color:var(--ink-soft);}
+
+  .stat-highlight{background:var(--bg-alt);border-left:3px solid var(--accent2);border-radius:0 8px 8px 0;padding:16px 20px;margin:20px 0;max-width:520px;}
+  .stat-highlight .num{font-size:1.7rem;font-weight:700;color:var(--accent);}
+  .stat-highlight .lbl{font-size:0.82rem;color:var(--ink-soft);margin-top:2px;}
+
+  table.raci-table{width:100%;border-collapse:collapse;margin-top:16px;font-size:0.84rem;max-width:780px;}
+  .raci-table th, .raci-table td{padding:9px 12px;border-bottom:1px solid var(--line);text-align:left;}
+  .raci-table th{font-size:0.7rem;text-transform:uppercase;letter-spacing:0.05em;color:var(--ink-soft);font-weight:700;}
+
+  .rollout-table{margin-top:16px;}
+
+  .principle-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:22px;}
+  .principle-card{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:22px;}
+  .principle-card .letter{font-size:0.7rem;font-weight:700;color:var(--accent2);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:8px;}
+  .principle-card h3{font-size:0.98rem;margin-bottom:8px;}
+  .principle-card p{font-size:0.84rem;color:var(--ink-soft);}
+
+  .result-banner{margin-top:36px;background:var(--ink);color:#f4f3ef;border-radius:var(--radius);padding:28px 30px;}
+  .result-banner h3{font-size:1rem;margin-bottom:8px;color:#fff;}
+  .result-banner p{color:#c9c7bf;font-size:0.92rem;}
+
+  footer{padding:36px 0 56px;text-align:center;color:var(--ink-soft);font-size:0.82rem;}
+
+  @media (max-width:900px){
+    .approach-grid{grid-template-columns:1fr 1fr;}
+    .triage-grid{grid-template-columns:1fr;}
+    .track-grid{grid-template-columns:1fr;}
+    .principle-grid{grid-template-columns:1fr;}
+  }
+</style>
+</head>
+<body>
+
+<div class="practice-banner">Live case interview exercise · prepared for a nonprofit organization's Business Systems Analyst hiring panel, organization name withheld</div>
+
+<header class="site-nav">
+  <div class="nav-inner">
+    <a href="index.html" class="nav-back">← Back to portfolio</a>
+    <span class="nav-name">Emmanuel Adoga</span>
+  </div>
+</header>
+
+<section class="hero">
+  <div class="wrap">
+    <div class="kicker">Case Interview Exercise · Business Systems Analyst</div>
+    <h1>Triage under pressure, an integration failure, and a full donor-payments program redesign</h1>
+    <p class="lede">A nonprofit organization's hiring panel gave me three realistic operational scenarios and asked me to present my approach live, then defend it under questioning. No scripted answer, just the working method I'd actually use. This page presents the content of that exercise; the organization's name has been withheld.</p>
+    <div class="meta-row">
+      <span><b>Format</b> · 10-slide presentation, 60-75 min interactive session</span>
+      <span><b>Scenarios</b> · 3, spanning prioritization, incident response, and process redesign</span>
+      <span><b>Method</b> · Live defense in front of a hiring panel, no pre-shared questions</span>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <div class="section-kicker">Scenario A</div>
+    <h2 class="section-title">Managing competing priorities</h2>
+    <div class="section-sub">Triage by impact first, then communicate the trade-offs</div>
+    <div class="prose">
+      <p>The scenario: a system implementation, a backlog of user support tickets, and a data cleanup effort are all flagged urgent at once, with no formal triage criteria in place. The question underneath it is whether "urgent" and "consequential" are actually the same thing.</p>
+    </div>
+    <div class="triage-grid">
+      <div class="triage-card">
+        <span class="ttag">Ring-fence first</span>
+        <h3>System implementation</h3>
+        <p>Vendor dependencies and contract milestones create compounding risk if delayed. Protect the critical path.</p>
+      </div>
+      <div class="triage-card">
+        <span class="ttag">Triage daily</span>
+        <h3>User support tickets</h3>
+        <p>Blocking issues handled same-day with a defined escalation path. Non-blocking issues batched into a queue.</p>
+      </div>
+      <div class="triage-card">
+        <span class="ttag">Schedule it</span>
+        <h3>Data cleanup</h3>
+        <p>No go-live dependency and can absorb a short delay, provided the timeline is communicated clearly.</p>
+      </div>
+    </div>
+    <div class="pull-quote">"Not everything called urgent is equally consequential. I ask what breaks, and for how long, if this slips one week, and that question cuts through the noise."</div>
+  </div>
+</section>
+
+<section style="background:var(--bg-alt);">
+  <div class="wrap">
+    <div class="section-kicker">Scenario B</div>
+    <h2 class="section-title">Integration failure: a 3-day sync gap</h2>
+    <div class="section-sub">Two parallel tracks, unblock the business first, diagnose in parallel</div>
+    <div class="prose">
+      <p>The donation platform hasn't synced to the CRM in three days, and downstream communications that depend on that data need to go out today. Splitting the response into two simultaneous tracks keeps the business moving instead of waiting on a root cause.</p>
+    </div>
+    <div class="track-grid">
+      <div class="track-card">
+        <h3>Track 1 · Unblock now</h3>
+        <ul>
+          <li>Scope the impact in the first 30 minutes: is data lost or just delayed? That distinction changes the severity and the response.</li>
+          <li>Pull a manual export from the donation platform, validate it, and deploy today's communications from it.</li>
+          <li>Business doesn't stop. Operations continue while root cause work runs in parallel, not sequentially after it.</li>
+        </ul>
+      </div>
+      <div class="track-card">
+        <h3>Track 2 · Root cause, in parallel</h3>
+        <ul>
+          <li>Pull error logs and find the exact timestamp the sync stopped. What changed in the 24 hours prior?</li>
+          <li>Check the common culprits first: API key expiry, a schema change, a rate limit, or a failed deployment.</li>
+          <li>Connect the technical symptom to the business timeline directly, rather than just handing findings off.</li>
+        </ul>
+      </div>
+    </div>
+    <div class="track-grid" style="margin-top:16px;">
+      <div class="track-card">
+        <h3>Stakeholder communication</h3>
+        <ul>
+          <li>Status note within hours covering what's known, the workaround, and an ETA.</li>
+          <li>Updates every 4-6 hours, with a close-out note that documents the root cause.</li>
+        </ul>
+      </div>
+      <div class="track-card">
+        <h3>Preventing recurrence</h3>
+        <ul>
+          <li>Integration health alerting on a volume threshold, so a silent failure gets caught in hours, not days.</li>
+          <li>A runbook for this failure mode, plus a post-incident review within 48 hours.</li>
+        </ul>
+      </div>
+    </div>
+    <div class="pull-quote">"Three days of silence is a monitoring gap, not just a technical failure."</div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <div class="section-kicker">Scenario C</div>
+    <h2 class="section-title">Redesigning the monthly giving program</h2>
+    <div class="section-sub">Elicit before designing, quantify before building, name an owner before go-live</div>
+    <div class="prose">
+      <p>Monthly donor payments run across multiple systems with variable charge dates and limited follow-up on failures. Responsibility is split across fundraising, finance, and operations with no single end-to-end owner. This was the largest scenario, worked in four parts.</p>
+    </div>
+    <div class="approach-grid">
+      <div class="approach-step">
+        <div class="n">01</div>
+        <h3>Understand current state</h3>
+        <p>Structured interviews across all three teams in parallel, not sequentially, plus job shadowing, document analysis of 12-24 months of transaction data before any interview, and a joint workshop to align findings. Output: As-Is and To-Be BPMN process maps.</p>
+      </div>
+      <div class="approach-step">
+        <div class="n">02</div>
+        <h3>Quantify the gaps</h3>
+        <p>Four structural gaps: split payment systems, variable charge dates, no formal recovery process, and fragmented ownership. Modeled as a hypothesis, not a claim, using stated assumptions the team would validate.</p>
+      </div>
+      <div class="approach-step">
+        <div class="n">03</div>
+        <h3>Design the future state</h3>
+        <p>Standardized charge dates chosen at sign-up, a formal dunning sequence as a defined business rule set, and an explicit RACI across fundraising, finance, and IT/operations, signed off before anything gets built.</p>
+      </div>
+      <div class="approach-step">
+        <div class="n">04</div>
+        <h3>Drive adoption</h3>
+        <p>A phased 5-6 month rollout, success metrics defined before build starts, and a pilot on new donors only, with the existing base untouched until the design is validated.</p>
+      </div>
+    </div>
+
+    <div class="stat-highlight">
+      <div class="num">$70K+</div>
+      <div class="lbl">Estimated annual unrecovered revenue, modeled from stated assumptions (donor count × average gift × failure rate × recovery rate), presented as a hypothesis for the team to validate, not a claimed result.</div>
+    </div>
+
+    <h3 style="font-size:0.95rem;margin:28px 0 4px;">Ownership: RACI across three teams</h3>
+    <table class="raci-table">
+      <tr><th>Activity</th><th>Fundraising</th><th>Finance</th><th>IT / Ops</th></tr>
+      <tr><td>Donor comms &amp; retention</td><td>R / A</td><td>I</td><td>C</td></tr>
+      <tr><td>Payment processing</td><td>I</td><td>R / A</td><td>R</td></tr>
+      <tr><td>System health &amp; monitoring</td><td>I</td><td>C</td><td>R / A</td></tr>
+      <tr><td>Reporting &amp; reconciliation</td><td>I</td><td>R / A</td><td>R</td></tr>
+    </table>
+
+    <h3 style="font-size:0.95rem;margin:28px 0 4px;">Phased rollout</h3>
+    <table class="raci-table rollout-table">
+      <tr><th>Phase</th><th>Weeks</th><th>Focus</th></tr>
+      <tr><td>Discovery</td><td>1-4</td><td>Interviews, data pull, process mapping</td></tr>
+      <tr><td>Design &amp; align</td><td>5-8</td><td>Future-state design, RACI sign-off</td></tr>
+      <tr><td>Build</td><td>9-16</td><td>Integration, dunning automation, self-service portal</td></tr>
+      <tr><td>UAT + pilot</td><td>17-20</td><td>New donors only</td></tr>
+      <tr><td>Full rollout</td><td>21-26</td><td>Cohort migration of the existing donor base</td></tr>
+    </table>
+
+    <div class="pull-quote" style="margin-top:24px;">"I always quantify before I design. A structural gap like this stays invisible until the data reveals it, and nothing gets built until the RACI is signed off by all three teams."</div>
+
+    <div class="prose" style="margin-top:20px;">
+      <p><b>Biggest risk named to the panel:</b> ownership drift after go-live. A RACI needs a named operational owner with real authority to enforce it, not just a document. The technology is the easier part.</p>
+    </div>
+  </div>
+</section>
+
+<section style="background:var(--bg-alt);">
+  <div class="wrap">
+    <div class="section-kicker">Closing the Session</div>
+    <h2 class="section-title">Questions for the panel</h2>
+    <div class="prose">
+      <p>I closed by asking the panel three questions of my own, to check my approach against how the organization actually operates rather than how the scenarios assumed it did: whether the three teams already meet regularly or operate independently, whether there'd be a dedicated operational owner post-implementation, and how much appetite there was for process change versus a system replacement.</p>
+    </div>
+
+    <div class="section-kicker" style="margin-top:36px;">Conclusion</div>
+    <h2 class="section-title">Three principles across all three scenarios</h2>
+    <div class="principle-grid">
+      <div class="principle-card">
+        <div class="letter">A</div>
+        <h3>Structure before solutions</h3>
+        <p>Triage by impact, not urgency. Elicitation before design. Root cause before fixing.</p>
+      </div>
+      <div class="principle-card">
+        <div class="letter">B</div>
+        <h3>Ownership is non-negotiable</h3>
+        <p>A RACI signed off before build starts. A named owner in place at go-live, not assumed.</p>
+      </div>
+      <div class="principle-card">
+        <div class="letter">C</div>
+        <h3>Outcomes, not just outputs</h3>
+        <p>Measurable outcomes defined before build starts. Success tracked against an agreed baseline. Adoption monitored, not assumed.</p>
+      </div>
+    </div>
+
+    <div class="result-banner">
+      <h3>Why this is on the portfolio</h3>
+      <p>All three scenarios were built to be answered live, without a scripted response, and defended under follow-up questions from the panel. The approach in each one is drawn directly from delivery work across supply chain, fintech, and ed-tech engagements: the same triage logic, elicitation method, and quantify-before-you-build discipline used on real NAV18, D365, and process design projects elsewhere in this portfolio.</p>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <a href="index.html" class="nav-back" style="justify-content:center;">← Back to Emmanuel Adoga's portfolio</a>
+    <p style="margin-top:14px;">© <span id="year"></span> Emmanuel Adoga</p>
+  </div>
+</footer>
+
+<script>
+  document.getElementById('year').textContent = new Date().getFullYear();
+</script>
+
+</body>
+</html>
