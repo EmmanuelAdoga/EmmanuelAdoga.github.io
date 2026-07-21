@@ -193,14 +193,19 @@
   }
   .ai-link:hover{text-decoration:underline;}
 
-  /* Practice callout */
-  .practice-callout{
-    margin-top:8px;background:var(--bg-alt);border:1px dashed var(--line);border-radius:var(--radius);
-    padding:24px 26px;display:flex;align-items:center;justify-content:space-between;gap:20px;flex-wrap:wrap;
+  /* Practice section */
+  .practice-grid{display:grid;grid-template-columns:1fr 1fr;gap:24px;}
+  .practice-card{
+    background:var(--card);border:1px solid var(--line);border-radius:var(--radius);
+    padding:28px 26px;display:flex;flex-direction:column;gap:12px;box-shadow:0 2px 10px rgba(28,28,26,0.03);
   }
-  .practice-callout .ptag{font-size:0.72rem;text-transform:uppercase;letter-spacing:0.08em;font-weight:700;color:var(--accent2);margin-bottom:6px;}
-  .practice-callout h3{font-size:1rem;margin-bottom:4px;}
-  .practice-callout p{font-size:0.86rem;color:var(--ink-soft);max-width:520px;}
+  .practice-card .ptag{
+    font-size:0.7rem;text-transform:uppercase;letter-spacing:0.07em;font-weight:700;color:var(--accent2);
+    background:#f3ece0;padding:5px 11px;border-radius:999px;display:inline-block;width:fit-content;
+  }
+  .practice-card h3{font-size:1.1rem;}
+  .practice-card p{font-size:0.9rem;color:var(--ink-soft);flex:1;}
+  .practice-card .btn{align-self:flex-start;margin-top:6px;}
 
   /* Experience */
   .timeline{border-left:2px solid var(--line);margin-left:6px;}
@@ -240,6 +245,7 @@
     .about-stats{grid-template-columns:repeat(2,1fr);}
     .skills-grid{grid-template-columns:1fr;}
     .misc-grid{grid-template-columns:1fr;}
+    .practice-grid{grid-template-columns:1fr;}
     .contact-section{padding:40px 26px;}
     section{padding:64px 0;}
     .case-study, .case-study.reverse{flex-direction:column;}
@@ -257,6 +263,7 @@
       <li><a href="#about">About</a></li>
       <li><a href="#skills">Skills</a></li>
       <li><a href="#projects">Work</a></li>
+      <li><a href="#practice">Practice</a></li>
       <li><a href="#ai-projects">AI Builds</a></li>
       <li><a href="#experience">Experience</a></li>
       <li><a href="Emmanuel_Adoga_Resume.pdf" target="_blank">Resume</a></li>
@@ -578,24 +585,28 @@
       </div>
     </div>
 
-    <div class="practice-callout">
-      <div>
-        <div class="ptag">Practice case study · synthetic data</div>
+  </div>
+</section>
+
+<section id="practice" style="background:var(--bg-alt);">
+  <div class="wrap">
+    <div class="section-kicker">Self-Directed Practice</div>
+    <h2 class="section-title">Where I build skills on my own time</h2>
+    <p class="section-intro">Outside client engagements, I build structured practice exercises around systems I want to go deeper on. These use synthetic or training data rather than client information, but follow the same rigor as the work above: a real brief, a documented approach, and a measurable result.</p>
+    <div class="practice-grid">
+      <div class="practice-card">
+        <span class="ptag">ITIL · ITSM · synthetic data</span>
         <h3>IT incident &amp; change management redesign</h3>
         <p>A self-directed exercise applying ITIL incident and change management practice: interactive swimlane diagram, gap analysis, phased implementation plan, and projected impact.</p>
+        <a href="incident-change-studio.html" class="btn btn-ghost">View the process studio →</a>
       </div>
-      <a href="incident-change-studio.html" class="btn btn-ghost">View the process studio →</a>
-    </div>
-
-    <div class="practice-callout" style="margin-top:20px;">
-      <div>
-        <div class="ptag">Practice case study · training exercise</div>
-        <h3>HubSpot user provisioning &amp; permission mapping</h3>
-        <p>A self-directed CRM administration exercise: mapping five new-hire roles to precise HubSpot permission sets rather than default templates, with screenshots from the actual configuration flow.</p>
+      <div class="practice-card">
+        <span class="ptag">CRM Administration · HubSpot</span>
+        <h3>User provisioning &amp; permission mapping</h3>
+        <p>A self-directed CRM administration exercise: mapping five new-hire roles to precise HubSpot permission sets scoped by object- and tool-level access, rather than default role templates.</p>
+        <a href="hubspot-practice.html" class="btn btn-ghost">View the case study →</a>
       </div>
-      <a href="hubspot-practice.html" class="btn btn-ghost">View the case study →</a>
     </div>
-
   </div>
 </section>
 
