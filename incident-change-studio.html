@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>IT Incident &amp; Change Management: Practice Case Study | Emmanuel Adoga</title>
+<meta name="description" content="A self-directed practice case study: ITIL incident and change management process mapping, with a swimlane diagram and synthetic data.">
+<style>
+  :root{
+    --bg:#fafaf9;--bg-alt:#f2f1ee;--ink:#1c1c1a;--ink-soft:#55534d;--line:#e4e2dc;
+    --accent:#2f5d50;--accent-soft:#eef3f1;--accent2:#b5793f;--card:#ffffff;--radius:10px;--maxw:1080px;
+    --issue:#c0522a;--issue-soft:#f7ece5;
+    font-size:16px;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{font-family:"Segoe UI",-apple-system,BlinkMacSystemFont,"Helvetica Neue",Arial,sans-serif;background:var(--bg);color:var(--ink);line-height:1.6;-webkit-font-smoothing:antialiased;}
+  a{color:inherit;text-decoration:none;}
+  .wrap{max-width:var(--maxw);margin:0 auto;padding:0 24px;}
+  section{padding:60px 0;}
+  h1,h2,h3{font-weight:600;letter-spacing:-0.01em;}
+
+  header.site-nav{position:sticky;top:0;z-index:50;background:rgba(250,250,249,0.92);backdrop-filter:saturate(180%) blur(8px);border-bottom:1px solid var(--line);}
+  .nav-inner{max-width:var(--maxw);margin:0 auto;padding:14px 24px;display:flex;align-items:center;justify-content:space-between;}
+  .nav-back{font-size:0.86rem;font-weight:600;color:var(--ink-soft);display:flex;align-items:center;gap:6px;}
+  .nav-back:hover{color:var(--accent);}
+  .nav-name{font-weight:700;font-size:0.95rem;}
+
+  .practice-banner{background:#fbf6ec;border-bottom:1px solid #ecdfc2;padding:10px 0;text-align:center;font-size:0.82rem;color:#7a5b1f;}
+
+  .hero{padding:64px 0 40px;border-bottom:1px solid var(--line);}
+  .kicker{font-size:0.78rem;text-transform:uppercase;letter-spacing:0.12em;color:var(--accent);font-weight:700;margin-bottom:14px;}
+  .hero h1{font-size:clamp(1.7rem,4vw,2.4rem);line-height:1.2;margin-bottom:16px;max-width:780px;}
+  .hero p.lede{font-size:1.02rem;color:var(--ink-soft);max-width:700px;}
+  .meta-row{display:flex;flex-wrap:wrap;gap:22px;margin-top:24px;font-size:0.86rem;color:var(--ink-soft);}
+  .meta-row b{color:var(--ink);}
+
+  .section-kicker{font-size:0.74rem;text-transform:uppercase;letter-spacing:0.1em;color:var(--accent);font-weight:700;margin-bottom:10px;}
+  h2.section-title{font-size:1.4rem;margin-bottom:18px;}
+  .prose{color:var(--ink-soft);max-width:760px;}
+  .prose p{margin-bottom:14px;}
+
+  .approach-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-top:24px;}
+  .approach-step{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:16px;}
+  .approach-step .n{font-size:0.72rem;font-weight:700;color:var(--accent);margin-bottom:6px;}
+  .approach-step h3{font-size:0.92rem;margin-bottom:6px;}
+  .approach-step p{font-size:0.82rem;color:var(--ink-soft);}
+
+  .lane-panel{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:24px;margin-top:8px;}
+  .lane-head{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:14px;margin-bottom:20px;}
+  .lane-toggle{display:flex;border:1px solid var(--line);border-radius:999px;overflow:hidden;}
+  .lane-btn{background:none;border:none;font-size:0.82rem;font-weight:700;padding:9px 20px;color:var(--ink-soft);cursor:pointer;transition:all .15s;}
+  .lane-btn.active{background:var(--ink);color:#fff;}
+  .lane-title{font-size:0.95rem;font-weight:700;}
+
+  .swimlane{display:grid;grid-template-columns:130px repeat(6,1fr);border:1px solid var(--line);border-radius:8px;overflow:hidden;}
+  .lane-label{background:var(--bg-alt);border-right:1px solid var(--line);border-bottom:1px solid var(--line);padding:14px 10px;font-size:0.78rem;font-weight:700;color:var(--ink);display:flex;align-items:center;}
+  .lane-label:last-of-type{border-bottom:none;}
+  .lane-cell{border-right:1px solid var(--line);border-bottom:1px solid var(--line);padding:10px;display:flex;align-items:center;justify-content:center;min-height:96px;position:relative;}
+  .lane-cell.empty{background:var(--bg-alt);}
+
+  .step-box{background:var(--card);border:1.5px solid var(--line);border-radius:8px;padding:10px 12px;font-size:0.76rem;width:100%;text-align:left;transition:border-color .2s, background .2s;}
+  .step-box .step-dot{display:inline-block;width:8px;height:8px;border-radius:50%;margin-right:6px;background:#c9c7bf;}
+  .step-box .step-dot.neutral{background:#c9c7bf;}
+  .step-box .step-dot.issue{background:var(--issue);}
+  .step-box .step-dot.fixed{background:var(--accent);}
+  .step-box .step-title{font-weight:700;color:var(--ink);display:block;margin-bottom:4px;}
+  .step-box .step-note{font-size:0.7rem;color:var(--ink-soft);display:block;}
+  .step-box.flagged{border-color:#e3b79b;background:var(--issue-soft);}
+  .step-box.resolved{border-color:#b7d3c8;background:var(--accent-soft);}
+
+  .lane-caption{font-size:0.78rem;color:var(--ink-soft);text-align:center;margin-top:16px;}
+
+  .gap-list{display:grid;grid-template-columns:repeat(2,1fr);gap:14px;margin-top:8px;}
+  .gap-item{background:var(--card);border:1px solid var(--line);border-left:3px solid var(--issue);border-radius:6px;padding:14px 16px;}
+  .gap-item .gtag{font-size:0.68rem;font-weight:700;text-transform:uppercase;letter-spacing:0.06em;color:var(--issue);margin-bottom:6px;}
+  .gap-item p{font-size:0.86rem;color:var(--ink-soft);}
+  .gap-item .fix{font-size:0.8rem;color:var(--accent);font-weight:600;margin-top:8px;}
+
+  .tier-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:8px;}
+  .tier-card{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:18px;}
+  .tier-cost{font-size:0.68rem;font-weight:700;text-transform:uppercase;letter-spacing:0.06em;padding:4px 10px;border-radius:999px;display:inline-block;margin-bottom:10px;}
+  .tier-cost.free{background:var(--accent-soft);color:var(--accent);}
+  .tier-cost.low{background:#f3ece0;color:var(--accent2);}
+  .tier-cost.capital{background:#f2e7e2;color:#8a4a2f;}
+  .tier-card h3{font-size:0.92rem;margin-bottom:6px;}
+  .tier-card p{font-size:0.82rem;color:var(--ink-soft);}
+
+  .impact-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-top:8px;}
+  .impact-card{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:18px;text-align:center;}
+  .impact-val{font-size:1.5rem;font-weight:700;color:var(--accent);}
+  .impact-lbl{font-size:0.78rem;color:var(--ink-soft);margin-top:6px;}
+  .impact-note{font-size:0.74rem;color:var(--ink-soft);margin-top:28px;text-align:center;}
+
+  footer{padding:36px 0 56px;text-align:center;color:var(--ink-soft);font-size:0.82rem;}
+
+  @media (max-width:900px){
+    .approach-grid{grid-template-columns:1fr 1fr;}
+    .gap-list{grid-template-columns:1fr;}
+    .impact-grid{grid-template-columns:1fr 1fr;}
+    .tier-grid{grid-template-columns:1fr;}
+    .swimlane{grid-template-columns:100px repeat(6,140px);overflow-x:auto;}
+    .lane-panel{overflow-x:auto;}
+  }
+</style>
+</head>
+<body>
+
+<div class="practice-banner">Self-directed practice case study · synthetic data, not a client engagement</div>
+
+<header class="site-nav">
+  <div class="nav-inner">
+    <a href="index.html" class="nav-back">← Back to portfolio</a>
+    <span class="nav-name">Emmanuel Adoga</span>
+  </div>
+</header>
+
+<section class="hero">
+  <div class="wrap">
+    <div class="kicker">Practice Case Study · ITSM Process Design</div>
+    <h1>Incident &amp; change management: closing the loop between firefighting and change control</h1>
+    <p class="lede">A self-directed exercise applying ITIL incident and change management practice (the same discipline behind my ServiceNow Business Process Consultant certification) to a common IT service management failure mode: incidents get fought and fixed, but the changes that caused them are never reviewed or tracked, so the same outages repeat. Data is synthetic, built to reflect realistic ITSM benchmark patterns.</p>
+    <div class="meta-row">
+      <span><b>Scenario</b> · Mid-size company IT service desk</span>
+      <span><b>Method</b> · Swimlane mapping, gap analysis, As-Is/To-Be redesign</span>
+      <span><b>Tools</b> · ITIL incident &amp; change management, ServiceNow process design, KPI modeling</span>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <div class="section-kicker">Problem</div>
+    <h2 class="section-title">Incidents get fought, but the changes behind them never get reviewed</h2>
+    <div class="prose">
+      <p>A mid-size company's IT incidents are reported through whatever channel is fastest (Slack, email, a phone call to whoever answers), with no ticket and no severity classification, so a login glitch and a full outage queue the same way. Under time pressure, technical fixes are pushed straight to production without going through the Change Advisory Board, because the only review path that exists is too slow for anything urgent. Nobody formally reviews incidents after the fact, so the same change-related failures repeat without anyone tracing them back to their root cause.</p>
+    </div>
+
+    <div class="section-kicker" style="margin-top:36px;">Approach</div>
+    <h2 class="section-title">Same discovery method used on client engagements</h2>
+    <div class="approach-grid">
+      <div class="approach-step"><div class="n">01</div><h3>Discovery</h3><p>Simulated stakeholder walkthroughs across End Users, Service Desk, Technical Team, Change Advisory Board, and Problem Management to trace how an incident actually moves through the organization today.</p></div>
+      <div class="approach-step"><div class="n">02</div><h3>As-Is mapping</h3><p>Built a five-lane swimlane diagram documenting every handoff, including exactly where change control gets skipped under pressure.</p></div>
+      <div class="approach-step"><div class="n">03</div><h3>Gap analysis</h3><p>Separated true process gaps from missing governance structure, distinguishing "no review happened" from "the review path was too slow to use."</p></div>
+      <div class="approach-step"><div class="n">04</div><h3>To-Be redesign</h3><p>Introduced severity-based triage and an expedited emergency-change path, then modeled the expected impact against published ITSM benchmarks.</p></div>
+    </div>
+  </div>
+</section>
+
+<section style="background:var(--bg-alt);">
+  <div class="wrap">
+    <div class="section-kicker">Process Map</div>
+    <h2 class="section-title">Incident-to-resolution swimlane, As-Is vs. To-Be</h2>
+    <div class="lane-panel">
+      <div class="lane-head">
+        <span class="lane-title">Interactive: toggle to see the redesign</span>
+        <div class="lane-toggle">
+          <button class="lane-btn active" data-state="asis" onclick="laneSetState(this,'asis')">As-Is</button>
+          <button class="lane-btn" data-state="tobe" onclick="laneSetState(this,'tobe')">To-Be</button>
+        </div>
+      </div>
+
+      <div class="swimlane" id="swimlane">
+        <div class="lane-label">End User</div>
+        <div class="lane-cell">
+          <div class="step-box" data-issue="Reported via Slack, email, or phone: no ticket, no timestamp for SLA tracking" data-fix="Single intake channel: every incident ticketed and timestamped automatically">
+            <span class="step-title"><span class="step-dot"></span>Report incident</span>
+            <span class="step-note"></span>
+          </div>
+        </div>
+        <div class="lane-cell empty"></div><div class="lane-cell empty"></div><div class="lane-cell empty"></div><div class="lane-cell empty"></div><div class="lane-cell empty"></div>
+
+        <div class="lane-label">Service Desk</div>
+        <div class="lane-cell empty"></div>
+        <div class="lane-cell">
+          <div class="step-box" data-issue="No severity classification: minor glitches and full outages queue the same way" data-fix="Sev 1–4 triage by business impact; Sev 1 pages on-call immediately">
+            <span class="step-title"><span class="step-dot"></span>Log &amp; triage</span>
+            <span class="step-note"></span>
+          </div>
+        </div>
+        <div class="lane-cell empty"></div><div class="lane-cell empty"></div><div class="lane-cell empty"></div><div class="lane-cell empty"></div>
+
+        <div class="lane-label">Technical Team</div>
+        <div class="lane-cell empty"></div><div class="lane-cell empty"></div>
+        <div class="lane-cell">
+          <div class="step-box">
+            <span class="step-title"><span class="step-dot neutral"></span>Diagnose &amp; resolve</span>
+            <span class="step-note"></span>
+          </div>
+        </div>
+        <div class="lane-cell">
+          <div class="step-box" data-issue="Fix pushed straight to production under time pressure: no review, no rollback plan" data-fix="Classified Standard, Normal, or Emergency; even emergency changes get expedited peer review">
+            <span class="step-title"><span class="step-dot"></span>Deploy fix</span>
+            <span class="step-note"></span>
+          </div>
+        </div>
+        <div class="lane-cell empty"></div><div class="lane-cell empty"></div>
+
+        <div class="lane-label">Change Advisory Board</div>
+        <div class="lane-cell empty"></div><div class="lane-cell empty"></div><div class="lane-cell empty"></div><div class="lane-cell empty"></div>
+        <div class="lane-cell">
+          <div class="step-box" data-issue="CAB skipped entirely for anything called urgent: most changes never get a second look" data-fix="Emergency Change Advisory Board (ECAB) gives expedited review within the hour, never zero review">
+            <span class="step-title"><span class="step-dot"></span>Review change</span>
+            <span class="step-note"></span>
+          </div>
+        </div>
+        <div class="lane-cell empty"></div>
+
+        <div class="lane-label">Problem Management</div>
+        <div class="lane-cell empty"></div><div class="lane-cell empty"></div><div class="lane-cell empty"></div><div class="lane-cell empty"></div><div class="lane-cell empty"></div>
+        <div class="lane-cell">
+          <div class="step-box" data-issue="No formal post-incident review: root cause never linked back to the originating change" data-fix="Post-incident review within 48 hours, logged in a known-error database, linked to the change record">
+            <span class="step-title"><span class="step-dot"></span>Post-incident review</span>
+            <span class="step-note"></span>
+          </div>
+        </div>
+      </div>
+
+      <div class="lane-caption">Amber flags mark where change control breaks down today; toggle To-Be to see the fix at each handoff.</div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <div class="section-kicker">Gap Analysis</div>
+    <h2 class="section-title">What's actually causing the repeat outages</h2>
+    <div class="gap-list">
+      <div class="gap-item">
+        <div class="gtag">Process gap</div>
+        <p>Incidents arrive through multiple informal channels with no single system of record, so there's no reliable SLA clock or incident history to analyze.</p>
+        <div class="fix">Fix: one ticketed intake channel, timestamped automatically at report</div>
+      </div>
+      <div class="gap-item">
+        <div class="gtag">Governance gap</div>
+        <p>Triage doesn't classify severity, so a critical outage can sit in the same queue as a password reset request.</p>
+        <div class="fix">Fix: Sev 1–4 framework tied to business impact, with automatic escalation for Sev 1</div>
+      </div>
+      <div class="gap-item">
+        <div class="gtag">Governance gap</div>
+        <p>The only change review path (standard CAB) is too slow for urgent fixes, so teams skip review entirely rather than use an accelerated path. The gap isn't that urgent changes get reviewed fast; it's that they get reviewed at all.</p>
+        <div class="fix">Fix: formal Emergency Change Advisory Board (ECAB), expedited rather than skipped</div>
+      </div>
+      <div class="gap-item">
+        <div class="gtag">Process gap</div>
+        <p>There's no post-incident review step, so root cause is never traced back to the change that caused it, and the same failure mode repeats undetected.</p>
+        <div class="fix">Fix: mandatory post-incident review within 48 hours for Sev 1/Sev 2, logged against the change record</div>
+      </div>
+    </div>
+
+    <div class="section-kicker" style="margin-top:36px;">Implementation Approach</div>
+    <h2 class="section-title">Governance fix, phased by cost, not a forced platform purchase</h2>
+    <div class="prose"><p>The instinct is often to recommend a full ITSM platform first. That's usually the wrong starting point. Most of this gap is a governance and discipline problem, not a tooling problem, and it can be closed before any new software is purchased.</p></div>
+    <div class="tier-grid">
+      <div class="tier-card">
+        <span class="tier-cost free">Tier 1 · $0</span>
+        <h3>Process discipline</h3>
+        <p>Define a severity framework and a single intake channel using whatever's already in place; a shared inbox with a mandatory template works as a starting point. No new software required.</p>
+      </div>
+      <div class="tier-card">
+        <span class="tier-cost low">Tier 2 · Low cost</span>
+        <h3>Lightweight ECAB cadence</h3>
+        <p>Stand up a recurring 15-minute virtual ECAB check-in for emergency changes using the calendar and chat tools already in use, a fast, mandatory checkpoint rather than a new platform.</p>
+      </div>
+      <div class="tier-card">
+        <span class="tier-cost capital">Tier 3 · Capital investment</span>
+        <h3>ITSM platform (e.g. ServiceNow)</h3>
+        <p>Justified once volume and complexity outgrow manual tracking: automated ticketing, workflow routing, and a searchable known-error database. A later phase, not the starting recommendation.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section style="background:var(--bg-alt);">
+  <div class="wrap">
+    <div class="section-kicker">Projected Impact</div>
+    <h2 class="section-title">Modeled outcome of the redesign</h2>
+    <div class="impact-grid">
+      <div class="impact-card"><div class="impact-val">8 hrs → 2 hrs</div><div class="impact-lbl">MTTR, Sev 1 incidents</div></div>
+      <div class="impact-card"><div class="impact-val">0% → 100%</div><div class="impact-lbl">Emergency changes reviewed before deployment</div></div>
+      <div class="impact-card"><div class="impact-val">−70%</div><div class="impact-lbl">Repeat incidents from known change causes</div></div>
+      <div class="impact-card"><div class="impact-val">61% → 92%</div><div class="impact-lbl">SLA compliance</div></div>
+    </div>
+    <p class="impact-note">Figures are modeled estimates based on published ITSM performance benchmarks (e.g. MTTR tiers for medium vs. high-performing teams), not measured results from a real engagement.</p>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <a href="index.html" class="nav-back" style="justify-content:center;">← Back to Emmanuel Adoga's portfolio</a>
+    <p style="margin-top:14px;">© <span id="year"></span> Emmanuel Adoga</p>
+  </div>
+</footer>
+
+<script>
+  document.getElementById('year').textContent = new Date().getFullYear();
+
+  function laneSetState(btn, state){
+    document.querySelectorAll('.lane-btn').forEach(function(b){ b.classList.toggle('active', b === btn); });
+
+    document.querySelectorAll('#swimlane .step-box[data-issue]').forEach(function(box){
+      var dot = box.querySelector('.step-dot');
+      var note = box.querySelector('.step-note');
+      if(state === 'asis'){
+        dot.className = 'step-dot issue';
+        note.textContent = box.getAttribute('data-issue');
+        box.classList.remove('resolved');
+        box.classList.add('flagged');
+      } else {
+        dot.className = 'step-dot fixed';
+        note.textContent = box.getAttribute('data-fix');
+        box.classList.remove('flagged');
+        box.classList.add('resolved');
+      }
+    });
+  }
+</script>
+
+</body>
+</html>

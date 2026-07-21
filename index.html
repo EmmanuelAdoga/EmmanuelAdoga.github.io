@@ -1,0 +1,768 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Emmanuel Adoga | Business Analyst &amp; ERP Functional Consultant</title>
+<meta name="description" content="Portfolio of Emmanuel Adoga, Business Analyst and ERP Functional Consultant specializing in Microsoft Dynamics NAV/D365, process analysis, and Power BI reporting.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%232f5d50'/%3E%3Ctext x='32' y='42' font-size='28' font-family='Arial, sans-serif' font-weight='700' fill='white' text-anchor='middle'%3EEA%3C/text%3E%3C/svg%3E">
+<style>
+  :root{
+    --bg:#fafaf9;
+    --bg-alt:#f2f1ee;
+    --ink:#1c1c1a;
+    --ink-soft:#55534d;
+    --line:#e4e2dc;
+    --accent:#2f5d50;
+    --accent-soft:#eef3f1;
+    --accent2:#b5793f;
+    --card:#ffffff;
+    --radius:10px;
+    --maxw:1040px;
+    font-size:16px;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  html{scroll-behavior:smooth;}
+  body{
+    font-family:"Segoe UI", -apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif;
+    background:var(--bg);
+    color:var(--ink);
+    line-height:1.6;
+    -webkit-font-smoothing:antialiased;
+  }
+  a{color:inherit;text-decoration:none;}
+  img,svg{max-width:100%;display:block;}
+  .wrap{max-width:var(--maxw);margin:0 auto;padding:0 24px;}
+  section{padding:88px 0;}
+  h1,h2,h3{font-weight:600;letter-spacing:-0.01em;}
+  h2.section-title{font-size:1.6rem;margin-bottom:8px;}
+  .section-kicker{
+    font-size:0.78rem;text-transform:uppercase;letter-spacing:0.12em;
+    color:var(--accent);font-weight:600;margin-bottom:10px;
+  }
+  .section-intro{color:var(--ink-soft);max-width:640px;margin-bottom:44px;font-size:1rem;}
+
+  /* Nav */
+  header.site-nav{
+    position:sticky;top:0;z-index:50;
+    background:rgba(250,250,249,0.9);
+    backdrop-filter:saturate(180%) blur(8px);
+    border-bottom:1px solid var(--line);
+  }
+  .nav-inner{
+    max-width:var(--maxw);margin:0 auto;padding:16px 24px;
+    display:flex;align-items:center;justify-content:space-between;
+  }
+  .nav-name{font-weight:700;font-size:1rem;letter-spacing:-0.01em;}
+  .nav-links{display:flex;gap:26px;list-style:none;font-size:0.9rem;align-items:center;}
+  .nav-links a{color:var(--ink-soft);transition:color .15s;}
+  .nav-links a:hover{color:var(--accent);}
+  .nav-links .btn{padding:8px 16px;font-size:0.82rem;}
+
+  /* Hero */
+  .hero{padding:100px 0 90px;border-bottom:1px solid var(--line);}
+  .hero-inner{display:flex;gap:48px;align-items:center;flex-wrap:wrap;}
+  .hero-copy{flex:1 1 480px;}
+  .hero-kicker{
+    font-size:0.85rem;color:var(--accent);font-weight:600;
+    text-transform:uppercase;letter-spacing:0.14em;margin-bottom:18px;
+  }
+  .hero h1{font-size:clamp(1.9rem, 4.4vw, 2.85rem);line-height:1.15;margin-bottom:20px;}
+  .hero h1 span{color:var(--accent);}
+  .hero p.lede{font-size:1.06rem;color:var(--ink-soft);max-width:600px;margin-bottom:28px;}
+  .hero-meta{display:flex;flex-wrap:wrap;gap:10px 22px;font-size:0.9rem;color:var(--ink-soft);margin-bottom:30px;}
+  .hero-meta span{display:flex;align-items:center;gap:6px;}
+  .btn-row{display:flex;flex-wrap:wrap;gap:14px;}
+  .btn{
+    display:inline-flex;align-items:center;gap:8px;
+    padding:12px 22px;border-radius:999px;font-size:0.92rem;font-weight:600;
+    border:1px solid var(--ink);transition:all .15s;
+  }
+  .btn-primary{background:var(--ink);color:#fff;}
+  .btn-primary:hover{background:var(--accent);border-color:var(--accent);}
+  .btn-ghost{border-color:var(--line);color:var(--ink);}
+  .btn-ghost:hover{border-color:var(--ink);}
+
+  .avatar-wrap{flex:0 0 auto;display:flex;flex-direction:column;align-items:center;gap:14px;}
+  .avatar{
+    width:180px;height:180px;border-radius:50%;
+    background:linear-gradient(155deg,var(--accent),#1f4038);
+    color:#fff;display:flex;align-items:center;justify-content:center;
+    font-size:3rem;font-weight:700;letter-spacing:-0.02em;
+    box-shadow:0 12px 30px rgba(47,93,80,0.25);
+    border:4px solid var(--card);
+  }
+  .avatar-note{font-size:0.72rem;color:var(--ink-soft);text-align:center;max-width:180px;}
+
+  /* About */
+  .about-grid{display:grid;grid-template-columns:1fr;gap:20px;}
+  .about-text p{color:var(--ink-soft);margin-bottom:16px;max-width:680px;}
+  .about-stats{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-top:36px;}
+  .stat{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:18px 16px;text-align:left;}
+  .stat .num{font-size:1.6rem;font-weight:700;color:var(--accent);}
+  .stat .label{font-size:0.82rem;color:var(--ink-soft);margin-top:4px;}
+
+  /* Skills */
+  .skills-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:20px;}
+  .skill-group{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:22px 22px 20px;}
+  .skill-group h3{font-size:0.95rem;margin-bottom:12px;color:var(--ink);}
+  .chip-row{display:flex;flex-wrap:wrap;gap:8px;}
+  .chip{background:var(--accent-soft);color:var(--accent);font-size:0.8rem;font-weight:600;padding:6px 12px;border-radius:999px;}
+
+  /* Process simulator */
+  .sim{background:var(--bg-alt);border-radius:8px;padding:18px;}
+  .sim-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;}
+  .sim-label{font-size:0.78rem;font-weight:700;color:var(--ink);}
+  .sim-toggle{display:flex;border:1px solid var(--line);border-radius:999px;overflow:hidden;}
+  .sim-btn{
+    background:none;border:none;font-size:0.74rem;font-weight:700;padding:6px 13px;
+    color:var(--ink-soft);cursor:pointer;transition:all .15s;
+  }
+  .sim-btn.active{background:var(--ink);color:#fff;}
+  .sim-flow{display:flex;flex-direction:column;align-items:stretch;}
+  .sim-step{
+    display:flex;align-items:center;gap:9px;background:var(--card);
+    border:1px solid var(--line);border-radius:6px;padding:8px 12px;font-size:0.82rem;
+  }
+  .sim-dot{width:9px;height:9px;border-radius:50%;flex:0 0 auto;background:#c9c7bf;transition:background .2s;}
+  .sim-dot.neutral{background:#c9c7bf;}
+  .sim-dot.issue{background:#c0522a;}
+  .sim-dot.fixed{background:var(--accent);}
+  .sim-step-name{font-weight:600;color:var(--ink);}
+  .sim-step-note{font-size:0.74rem;color:var(--ink-soft);margin-left:auto;text-align:right;}
+  .sim-arrow{text-align:center;color:var(--ink-soft);font-size:0.8rem;padding:2px 0;}
+  .sim-metrics{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:16px;}
+  .sim-metric{background:var(--card);border:1px solid var(--line);border-radius:6px;padding:10px 8px;text-align:center;}
+  .sim-val{display:block;font-size:1.15rem;font-weight:700;color:var(--accent);}
+  .sim-mlbl{display:block;font-size:0.68rem;color:var(--ink-soft);margin-top:2px;line-height:1.3;}
+  .sim-caption{font-size:0.72rem;color:var(--ink-soft);text-align:center;margin-top:12px;}
+
+  /* Case studies */
+  .case-study{
+    display:flex;gap:44px;align-items:center;flex-wrap:wrap;
+    padding:44px 0;border-bottom:1px solid var(--line);
+  }
+  .case-study:last-child{border-bottom:none;}
+  .case-study.reverse{flex-direction:row-reverse;}
+  .case-visual{
+    flex:1 1 380px;background:var(--card);border:1px solid var(--line);border-radius:var(--radius);
+    padding:22px;min-width:300px;
+  }
+  .case-copy{flex:1 1 400px;min-width:300px;}
+  .case-tag{
+    display:inline-block;font-size:0.72rem;text-transform:uppercase;letter-spacing:0.08em;
+    color:var(--accent);font-weight:700;background:var(--accent-soft);
+    padding:5px 11px;border-radius:999px;margin-bottom:14px;
+  }
+  .case-copy h3{font-size:1.3rem;margin-bottom:6px;}
+  .case-client{font-size:0.85rem;color:var(--ink-soft);margin-bottom:18px;}
+  .case-block{margin-bottom:14px;}
+  .case-block .k{font-size:0.72rem;text-transform:uppercase;letter-spacing:0.08em;font-weight:700;color:var(--ink);margin-bottom:4px;}
+  .case-block p{font-size:0.92rem;color:var(--ink-soft);}
+  .case-result{
+    font-size:0.95rem;font-weight:700;color:var(--ink);
+    background:var(--bg-alt);border-left:3px solid var(--accent2);
+    padding:10px 14px;border-radius:6px;margin:16px 0;
+  }
+  .case-tools{display:flex;flex-wrap:wrap;gap:6px;margin-top:14px;}
+  .case-tools span{font-size:0.72rem;color:var(--ink-soft);border:1px solid var(--line);padding:3px 9px;border-radius:999px;}
+  .visual-label{font-size:0.72rem;text-transform:uppercase;letter-spacing:0.06em;color:var(--ink-soft);margin-top:10px;text-align:center;}
+
+  /* AI products */
+  .ai-intro{color:var(--ink-soft);max-width:680px;margin-bottom:40px;}
+  .ai-grid{display:grid;grid-template-columns:1fr;gap:24px;}
+  .ai-card{
+    background:var(--card);border:1px solid var(--line);border-radius:var(--radius);
+    padding:30px;display:flex;gap:32px;flex-wrap:wrap;
+  }
+  .ai-visual{flex:0 0 260px;}
+  .ai-copy{flex:1 1 380px;min-width:280px;}
+  .ai-status{
+    display:inline-flex;align-items:center;gap:6px;font-size:0.72rem;font-weight:700;
+    text-transform:uppercase;letter-spacing:0.06em;padding:5px 11px;border-radius:999px;margin-bottom:14px;
+  }
+  .ai-status.live{background:var(--accent-soft);color:var(--accent);}
+  .ai-status.private{background:#f3ece0;color:var(--accent2);}
+  .ai-card h3{font-size:1.2rem;margin-bottom:6px;}
+  .ai-client{font-size:0.85rem;color:var(--ink-soft);margin-bottom:16px;}
+  .ai-card .case-block{margin-bottom:12px;}
+  .ai-card .case-result{margin:14px 0;}
+  .ai-link{
+    display:inline-flex;align-items:center;gap:6px;margin-top:8px;
+    font-size:0.88rem;font-weight:700;color:var(--accent);
+  }
+  .ai-link:hover{text-decoration:underline;}
+
+  /* Practice callout */
+  .practice-callout{
+    margin-top:8px;background:var(--bg-alt);border:1px dashed var(--line);border-radius:var(--radius);
+    padding:24px 26px;display:flex;align-items:center;justify-content:space-between;gap:20px;flex-wrap:wrap;
+  }
+  .practice-callout .ptag{font-size:0.72rem;text-transform:uppercase;letter-spacing:0.08em;font-weight:700;color:var(--accent2);margin-bottom:6px;}
+  .practice-callout h3{font-size:1rem;margin-bottom:4px;}
+  .practice-callout p{font-size:0.86rem;color:var(--ink-soft);max-width:520px;}
+
+  /* Experience */
+  .timeline{border-left:2px solid var(--line);margin-left:6px;}
+  .timeline-item{position:relative;padding:0 0 36px 30px;}
+  .timeline-item:last-child{padding-bottom:0;}
+  .timeline-item::before{
+    content:"";position:absolute;left:-7px;top:4px;width:12px;height:12px;border-radius:50%;
+    background:var(--accent);border:2px solid var(--bg);
+  }
+  .timeline-item .role-title{font-weight:700;font-size:1rem;}
+  .timeline-item .role-meta{font-size:0.85rem;color:var(--ink-soft);margin:3px 0 10px;}
+  .timeline-item p{color:var(--ink-soft);font-size:0.92rem;max-width:680px;}
+
+  .misc-grid{display:grid;grid-template-columns:1fr 1fr;gap:36px;margin-top:36px;}
+  .misc-grid h3{font-size:0.95rem;margin-bottom:14px;}
+  .misc-grid ul{list-style:none;}
+  .misc-grid li{font-size:0.9rem;color:var(--ink-soft);padding:9px 0;border-bottom:1px solid var(--line);}
+  .misc-grid li:last-child{border-bottom:none;}
+  .misc-grid li b{color:var(--ink);font-weight:600;}
+
+  .contact-section{
+    background:var(--ink);color:#f4f3ef;border-radius:var(--radius);padding:56px 44px;text-align:left;
+    display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:28px;
+  }
+  .contact-section h2{font-size:1.7rem;margin-bottom:8px;color:#fff;}
+  .contact-section p{color:#c9c7bf;max-width:420px;}
+  .contact-actions{display:flex;flex-wrap:wrap;gap:14px;}
+  .contact-actions .btn-primary{background:var(--accent);border-color:var(--accent);}
+  .contact-actions .btn-primary:hover{background:#3d7364;border-color:#3d7364;}
+  .contact-actions .btn-ghost{border-color:#4a4a45;color:#f4f3ef;}
+  .contact-actions .btn-ghost:hover{border-color:#f4f3ef;}
+
+  footer{padding:36px 0 60px;text-align:center;color:var(--ink-soft);font-size:0.82rem;}
+
+  @media (max-width:760px){
+    .nav-links a:not(.btn){display:none;}
+    .about-stats{grid-template-columns:repeat(2,1fr);}
+    .skills-grid{grid-template-columns:1fr;}
+    .misc-grid{grid-template-columns:1fr;}
+    .contact-section{padding:40px 26px;}
+    section{padding:64px 0;}
+    .case-study, .case-study.reverse{flex-direction:column;}
+    .hero-inner{flex-direction:column-reverse;text-align:center;}
+    .hero-meta, .btn-row{justify-content:center;}
+  }
+</style>
+</head>
+<body>
+
+<header class="site-nav">
+  <div class="nav-inner">
+    <div class="nav-name">Emmanuel Adoga</div>
+    <ul class="nav-links">
+      <li><a href="#about">About</a></li>
+      <li><a href="#skills">Skills</a></li>
+      <li><a href="#projects">Work</a></li>
+      <li><a href="#ai-projects">AI Builds</a></li>
+      <li><a href="#experience">Experience</a></li>
+      <li><a href="Emmanuel_Adoga_Resume.pdf" target="_blank">Resume</a></li>
+      <li><a href="#contact" class="btn btn-primary">Contact</a></li>
+    </ul>
+  </div>
+</header>
+
+<section class="hero">
+  <div class="wrap hero-inner">
+    <div class="hero-copy">
+      <div class="hero-kicker">Business Analyst · ERP Functional Consultant</div>
+      <h1>I turn messy operational problems into <span>working systems.</span></h1>
+      <p class="lede">7+ years configuring Microsoft Dynamics NAV and D365 Business Central, mapping business processes, and building the reporting that lets operations teams see what's actually happening, with a growing focus on where AI fits into that work.</p>
+      <div class="hero-meta">
+        <span>📍 Open to remote &amp; hybrid roles across Canada</span>
+        <span>✉️ emmanuel.adoga91@gmail.com</span>
+      </div>
+      <div class="btn-row">
+        <a href="#projects" class="btn btn-primary">View Case Studies</a>
+        <a href="Emmanuel_Adoga_Resume.pdf" target="_blank" class="btn btn-ghost">📄 Download Resume</a>
+        <a href="#" class="btn btn-ghost" title="Add your LinkedIn URL">🔗 LinkedIn</a>
+      </div>
+    </div>
+    <div class="avatar-wrap">
+      <div class="avatar">EA</div>
+      <div class="avatar-note">Swap in a headshot photo here</div>
+    </div>
+  </div>
+</section>
+
+<section id="about">
+  <div class="wrap">
+    <div class="section-kicker">About</div>
+    <h2 class="section-title">Business analysis depth, ERP configuration hands-on</h2>
+    <div class="about-grid">
+      <div class="about-text">
+        <p>I'm a Business Analyst and ERP Functional Consultant with 7+ years of experience across distribution, logistics, and professional services environments. I move fluidly between structured discovery (BRD/FRD authorship, BPMN process mapping, stakeholder facilitation) and hands-on system configuration in Microsoft Dynamics NAV (Navision) and D365 Business Central.</p>
+        <p>My work centers on finding where a process is actually breaking, then fixing it at the system level: posting group setup, item tracking and UOM governance, approval workflows, and the Power BI reporting that replaces manual weekly spreadsheets with real-time visibility. I'm Certified Business Analysis Professional (CBAP) and ServiceNow Business Process Consultant certified, and equally comfortable running Agile sprints or structured Waterfall engagements.</p>
+        <p>I'm increasingly focused on applying AI to this work: smarter requirements analysis, automated process discovery, and reducing the manual overhead in traditional BA delivery.</p>
+      </div>
+      <div class="about-stats">
+        <div class="stat"><div class="num">7+</div><div class="label">Years in BA / ERP delivery</div></div>
+        <div class="stat"><div class="num">6</div><div class="label">Countries worked across</div></div>
+        <div class="stat"><div class="num">35%</div><div class="label">Order cycle time cut (NAV18 project)</div></div>
+        <div class="stat"><div class="num">CBAP</div><div class="label">IIBA certified</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="skills" style="background:var(--bg-alt);">
+  <div class="wrap">
+    <div class="section-kicker">Skills &amp; Tools</div>
+    <h2 class="section-title">What I work with</h2>
+    <p class="section-intro">A blend of ERP functional configuration, business analysis methodology, and the data/reporting tools that turn findings into decisions.</p>
+    <div class="skills-grid">
+      <div class="skill-group">
+        <h3>ERP Systems</h3>
+        <div class="chip-row">
+          <span class="chip">Microsoft Dynamics NAV (Navision)</span>
+          <span class="chip">D365 Business Central</span>
+          <span class="chip">SAP (familiar)</span>
+        </div>
+      </div>
+      <div class="skill-group">
+        <h3>Business Analysis</h3>
+        <div class="chip-row">
+          <span class="chip">BRD / FRD</span><span class="chip">BPMN</span><span class="chip">UML</span>
+          <span class="chip">Gap Analysis</span><span class="chip">RTM</span><span class="chip">Impact Assessments</span>
+        </div>
+      </div>
+      <div class="skill-group">
+        <h3>Data &amp; Reporting</h3>
+        <div class="chip-row">
+          <span class="chip">SQL</span><span class="chip">Power BI</span><span class="chip">Tableau</span>
+          <span class="chip">Advanced Excel</span><span class="chip">Power Query</span>
+        </div>
+      </div>
+      <div class="skill-group">
+        <h3>Delivery &amp; Process</h3>
+        <div class="chip-row">
+          <span class="chip">Agile / Scrum / Kanban</span><span class="chip">Waterfall</span>
+          <span class="chip">SAFe (familiar)</span><span class="chip">JAD Facilitation</span>
+        </div>
+      </div>
+      <div class="skill-group">
+        <h3>Tools</h3>
+        <div class="chip-row">
+          <span class="chip">Jira</span><span class="chip">Azure DevOps</span><span class="chip">Confluence</span>
+          <span class="chip">SharePoint</span><span class="chip">Visio</span><span class="chip">Bizagi</span>
+          <span class="chip">Lucidchart</span><span class="chip">Figma</span><span class="chip">Miro</span>
+        </div>
+      </div>
+      <div class="skill-group">
+        <h3>Testing &amp; ITSM</h3>
+        <div class="chip-row">
+          <span class="chip">UAT</span><span class="chip">Regression Testing</span><span class="chip">SIT</span>
+          <span class="chip">Robot Framework</span><span class="chip">ServiceNow ITSM</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="projects">
+  <div class="wrap">
+    <div class="section-kicker">Case Studies</div>
+    <h2 class="section-title">Selected work</h2>
+    <p class="section-intro">Five engagements that show the range of the work: ERP configuration, BI reporting, process automation, and AI-driven requirements. Each follows the problem I was brought in to solve, what I did, and the measurable result.</p>
+
+    <!-- Case Study 1 -->
+    <div class="case-study">
+      <div class="case-visual">
+        <div class="sim">
+          <div class="sim-head">
+            <span class="sim-label">Order-to-Cash flow</span>
+            <div class="sim-toggle">
+              <button class="sim-btn active" data-state="asis" onclick="simSetState(this,'asis')">As-Is</button>
+              <button class="sim-btn" data-state="tobe" onclick="simSetState(this,'tobe')">To-Be</button>
+            </div>
+          </div>
+          <div class="sim-flow">
+            <div class="sim-step" data-issue="Manual CRM re-entry loop" data-fix="Field mapping spec defined">
+              <span class="sim-dot"></span><span class="sim-step-name">Order entry</span><span class="sim-step-note"></span>
+            </div>
+            <div class="sim-arrow">↓</div>
+            <div class="sim-step">
+              <span class="sim-dot neutral"></span><span class="sim-step-name">Inventory allocation</span><span class="sim-step-note"></span>
+            </div>
+            <div class="sim-arrow">↓</div>
+            <div class="sim-step" data-issue="UOM mismatch at receiving" data-fix="UOM lock + validation rule">
+              <span class="sim-dot"></span><span class="sim-step-name">Receiving &amp; UOM check</span><span class="sim-step-note"></span>
+            </div>
+            <div class="sim-arrow">↓</div>
+            <div class="sim-step" data-issue="No shipment alert triggered" data-fix="Auto shipment notification">
+              <span class="sim-dot"></span><span class="sim-step-name">Shipment notification</span><span class="sim-step-note"></span>
+            </div>
+            <div class="sim-arrow">↓</div>
+            <div class="sim-step">
+              <span class="sim-dot neutral"></span><span class="sim-step-name">Order fulfilled</span><span class="sim-step-note"></span>
+            </div>
+          </div>
+          <div class="sim-metrics">
+            <div class="sim-metric"><span class="sim-val" data-asis="78" data-tobe="94" data-suffix="%">78%</span><span class="sim-mlbl">On-time fulfilment</span></div>
+            <div class="sim-metric"><span class="sim-val" data-asis="100" data-tobe="65" data-suffix="">100</span><span class="sim-mlbl">Cycle time index</span></div>
+            <div class="sim-metric"><span class="sim-val" data-asis="100" data-tobe="75" data-suffix="">100</span><span class="sim-mlbl">Stock variance index</span></div>
+          </div>
+          <div class="sim-caption">Toggle As-Is / To-Be to see how 3 targeted NAV18 fixes move every downstream metric</div>
+        </div>
+        <div class="visual-label">Interactive: click As-Is / To-Be above</div>
+      </div>
+      <div class="case-copy">
+        <span class="case-tag">ERP Configuration</span>
+        <h3>Order-to-Cash Optimization (Microsoft Dynamics NAV18)</h3>
+        <div class="case-client">Distribution client · via JL13 Concepts</div>
+        <div class="case-block">
+          <div class="k">Problem</div>
+          <p>Order-to-Cash was breaking across order entry, inventory allocation, and shipment processing, with fulfilment stuck at 78% on-time and recurring inventory variances.</p>
+        </div>
+        <div class="case-block">
+          <div class="k">Approach</div>
+          <p>Interviewed 14 stakeholders to map the current-state workflow, pulled and reconciled six months of NAV18 transaction data to find root causes, and identified three systemic gaps: missing shipment notification triggers, a manual CRM-to-NAV re-entry loop, and UOM mismatches at receiving. Delivered six targeted configuration changes, including a receiving validation rule and corrected UOM conversion tables.</p>
+        </div>
+        <div class="case-result">35% faster order cycle time · on-time fulfilment up from 78% to 94% · stock variance down 25%</div>
+        <div class="case-tools"><span>NAV18</span><span>Power BI</span><span>Excel root-cause analysis</span></div>
+      </div>
+    </div>
+
+    <!-- Case Study 2 -->
+    <div class="case-study reverse">
+      <div class="case-visual">
+        <svg viewBox="0 0 320 200" xmlns="http://www.w3.org/2000/svg">
+          <rect x="8" y="10" width="304" height="52" rx="8" fill="#eef3f1" stroke="#2f5d50" stroke-width="1.2"/>
+          <text x="22" y="32" font-size="12" font-family="Arial" font-weight="700" fill="#1c1c1a">Sales &amp; Receivables</text>
+          <text x="22" y="50" font-size="10" font-family="Arial" fill="#55534d">Posting groups · payment terms · approvals</text>
+          <circle cx="290" cy="36" r="9" fill="#2f5d50"/>
+          <path d="M286 36 l3 3 l6 -7" stroke="white" stroke-width="2" fill="none" stroke-linecap="round"/>
+
+          <rect x="8" y="72" width="304" height="52" rx="8" fill="#eef3f1" stroke="#2f5d50" stroke-width="1.2"/>
+          <text x="22" y="94" font-size="12" font-family="Arial" font-weight="700" fill="#1c1c1a">Purchase &amp; Payables</text>
+          <text x="22" y="112" font-size="10" font-family="Arial" fill="#55534d">Vendor posting groups · 3-way matching</text>
+          <circle cx="290" cy="98" r="9" fill="#2f5d50"/>
+          <path d="M286 98 l3 3 l6 -7" stroke="white" stroke-width="2" fill="none" stroke-linecap="round"/>
+
+          <rect x="8" y="134" width="304" height="52" rx="8" fill="#eef3f1" stroke="#2f5d50" stroke-width="1.2"/>
+          <text x="22" y="156" font-size="12" font-family="Arial" font-weight="700" fill="#1c1c1a">Inventory &amp; Warehouse</text>
+          <text x="22" y="174" font-size="10" font-family="Arial" fill="#55534d">Item tracking · bins · FIFO / Average costing</text>
+          <circle cx="290" cy="160" r="9" fill="#2f5d50"/>
+          <path d="M286 160 l3 3 l6 -7" stroke="white" stroke-width="2" fill="none" stroke-linecap="round"/>
+        </svg>
+        <div class="visual-label">Modules configured end-to-end</div>
+      </div>
+      <div class="case-copy">
+        <span class="case-tag">ERP Configuration</span>
+        <h3>D365 Business Central: Multi-Module Configuration</h3>
+        <div class="case-client">Distribution client migrating off a legacy system · via JL13 Concepts</div>
+        <div class="case-block">
+          <div class="k">Problem</div>
+          <p>A distribution client transitioning off a legacy operations system needed Sales, Purchase, and Inventory fully configured in D365 Business Central before go-live, with no functional gaps.</p>
+        </div>
+        <div class="case-block">
+          <div class="k">Approach</div>
+          <p>Led end-to-end setup of customer and vendor posting groups, payment terms, and document approval workflows; built item cards with tracking codes for serial and lot traceability; configured two warehouse locations with bin structures and set FIFO/Average costing methods per item type.</p>
+        </div>
+        <div class="case-result">Fully configured environment delivered with training documentation, test scripts, and post-go-live validation across all three modules</div>
+        <div class="case-tools"><span>D365 Business Central</span><span>UAT</span><span>Training docs</span></div>
+      </div>
+    </div>
+
+    <!-- Case Study 3 -->
+    <div class="case-study">
+      <div class="case-visual">
+        <svg viewBox="0 0 320 200" xmlns="http://www.w3.org/2000/svg">
+          <rect x="8" y="8" width="92" height="46" rx="6" fill="#eef3f1"/>
+          <text x="18" y="28" font-size="10" fill="#55534d" font-family="Arial">KPIs tracked</text>
+          <text x="18" y="46" font-size="18" fill="#2f5d50" font-family="Arial" font-weight="700">15</text>
+          <rect x="108" y="8" width="92" height="46" rx="6" fill="#eef3f1"/>
+          <text x="118" y="28" font-size="10" fill="#55534d" font-family="Arial">Reports replaced</text>
+          <text x="118" y="46" font-size="18" fill="#2f5d50" font-family="Arial" font-weight="700">5</text>
+          <rect x="208" y="8" width="104" height="46" rx="6" fill="#eef3f1"/>
+          <text x="218" y="28" font-size="10" fill="#55534d" font-family="Arial">Data sources</text>
+          <text x="218" y="46" font-size="18" fill="#2f5d50" font-family="Arial" font-weight="700">CRM · POS · Support</text>
+          <g transform="translate(8,66)">
+            <rect x="0" y="70" width="26" height="50" fill="#b5793f"/>
+            <rect x="34" y="40" width="26" height="80" fill="#2f5d50"/>
+            <rect x="68" y="55" width="26" height="65" fill="#2f5d50"/>
+            <rect x="102" y="20" width="26" height="100" fill="#2f5d50"/>
+            <rect x="136" y="45" width="26" height="75" fill="#2f5d50"/>
+            <rect x="170" y="10" width="26" height="110" fill="#b5793f"/>
+            <line x1="0" y1="120" x2="220" y2="120" stroke="#e4e2dc" stroke-width="1.5"/>
+          </g>
+          <text x="10" y="196" font-size="10" fill="#55534d" font-family="Arial">Weekly KPI trend, live in Power BI</text>
+        </svg>
+        <div class="visual-label">Unified reporting framework</div>
+      </div>
+      <div class="case-copy">
+        <span class="case-tag">Reporting &amp; BI</span>
+        <h3>Customer Intelligence &amp; Power BI Reporting Framework</h3>
+        <div class="case-client">Retail client, three provinces · via JL13 Concepts</div>
+        <div class="case-block">
+          <div class="k">Problem</div>
+          <p>Customer behaviour, sales performance, and support data lived in five separate weekly Excel reports with no unified view and no real-time visibility for leadership.</p>
+        </div>
+        <div class="case-block">
+          <div class="k">Approach</div>
+          <p>Worked with the analytics team in two-week Agile sprints to define 15 customer and operational KPIs, mapped data sources across CRM, POS, and support ticketing systems, and wrote Power BI dashboard requirements, validating every KPI calculation against sample data before sign-off.</p>
+        </div>
+        <div class="case-result">Five separate weekly Excel reports replaced with one real-time Power BI framework</div>
+        <div class="case-tools"><span>Power BI</span><span>KPI Design</span><span>Agile</span></div>
+      </div>
+    </div>
+
+    <!-- Case Study 4 -->
+    <div class="case-study reverse">
+      <div class="case-visual">
+        <svg viewBox="0 0 320 200" xmlns="http://www.w3.org/2000/svg">
+          <text x="10" y="24" font-size="11" fill="#55534d" font-family="Arial">Manual onboarding steps</text>
+          <text x="10" y="48" font-size="12" fill="#1c1c1a" font-family="Arial" font-weight="700">Before: 18 steps</text>
+          <g>
+            <circle cx="18" cy="66" r="5" fill="#b5793f"/><circle cx="36" cy="66" r="5" fill="#b5793f"/><circle cx="54" cy="66" r="5" fill="#b5793f"/><circle cx="72" cy="66" r="5" fill="#b5793f"/><circle cx="90" cy="66" r="5" fill="#b5793f"/><circle cx="108" cy="66" r="5" fill="#b5793f"/><circle cx="126" cy="66" r="5" fill="#b5793f"/><circle cx="144" cy="66" r="5" fill="#b5793f"/><circle cx="162" cy="66" r="5" fill="#b5793f"/>
+            <circle cx="180" cy="66" r="5" fill="#b5793f"/><circle cx="198" cy="66" r="5" fill="#b5793f"/><circle cx="216" cy="66" r="5" fill="#b5793f"/><circle cx="234" cy="66" r="5" fill="#b5793f"/><circle cx="252" cy="66" r="5" fill="#b5793f"/><circle cx="270" cy="66" r="5" fill="#b5793f"/><circle cx="288" cy="66" r="5" fill="#b5793f"/><circle cx="306" cy="66" r="5" fill="#b5793f"/><circle cx="18" cy="80" r="5" fill="#b5793f"/>
+          </g>
+          <text x="10" y="112" font-size="12" fill="#1c1c1a" font-family="Arial" font-weight="700">After: 7 steps</text>
+          <g>
+            <circle cx="18" cy="130" r="5" fill="#2f5d50"/><circle cx="36" cy="130" r="5" fill="#2f5d50"/><circle cx="54" cy="130" r="5" fill="#2f5d50"/><circle cx="72" cy="130" r="5" fill="#2f5d50"/><circle cx="90" cy="130" r="5" fill="#2f5d50"/><circle cx="108" cy="130" r="5" fill="#2f5d50"/><circle cx="126" cy="130" r="5" fill="#2f5d50"/>
+          </g>
+          <text x="10" y="170" font-size="10" fill="#55534d" font-family="Arial">70% faster processing in first intake cycle</text>
+        </svg>
+        <div class="visual-label">Manual steps removed via automation</div>
+      </div>
+      <div class="case-copy">
+        <span class="case-tag">Process Automation</span>
+        <h3>Digital Student Onboarding Platform</h3>
+        <div class="case-client">Childcare &amp; early education client · via Heels &amp; Tech</div>
+        <div class="case-block">
+          <div class="k">Problem</div>
+          <p>A fully paper-based onboarding process was handling 200+ applications per intake cycle across 18 manual steps, creating processing delays and data entry errors.</p>
+        </div>
+        <div class="case-block">
+          <div class="k">Approach</div>
+          <p>Ran structured elicitation sessions with admin staff, educators, and the operations director; produced a BRD with 18 user stories plus As-Is/To-Be process maps in Visio; designed Figma wireframes for the applicant portal and admin dashboard; and identified seven automation opportunities that removed 11 manual steps.</p>
+        </div>
+        <div class="case-result">18 manual steps reduced to 7 · processing time cut 70% in the first intake cycle</div>
+        <div class="case-tools"><span>Figma</span><span>BRD</span><span>Process Mapping</span></div>
+      </div>
+    </div>
+
+    <!-- Case Study 5 -->
+    <div class="case-study">
+      <div class="case-visual">
+        <svg viewBox="0 0 320 200" xmlns="http://www.w3.org/2000/svg">
+          <g transform="translate(90,20)">
+            <circle r="70" cx="70" cy="70" fill="#e4e2dc"/>
+            <path d="M70 70 L70 0 A70 70 0 0 1 132 100 Z" fill="#2f5d50"/>
+            <circle r="34" cx="70" cy="70" fill="#fafaf9"/>
+          </g>
+          <text x="120" y="76" font-size="18" font-family="Arial" font-weight="700" fill="#1c1c1a">68%</text>
+          <text x="98" y="92" font-size="9" font-family="Arial" fill="#55534d">auto-resolved</text>
+          <text x="20" y="176" font-size="10" font-family="Arial" fill="#55534d">■ Resolved by bot</text>
+          <text x="170" y="176" font-size="10" font-family="Arial" fill="#55534d">■ Escalated to team</text>
+        </svg>
+        <div class="visual-label">Query resolution after chatbot launch</div>
+      </div>
+      <div class="case-copy">
+        <span class="case-tag">AI &amp; Automation</span>
+        <h3>AI Support Chatbot: Requirements &amp; Conversation Design</h3>
+        <div class="case-client">Fashion e-commerce platform, 15,000+ monthly visitors · via Heels &amp; Tech</div>
+        <div class="case-block">
+          <div class="k">Problem</div>
+          <p>The support team was manually handling every customer query on a fast-growing e-commerce site, with no visibility into which query types were actually driving ticket volume.</p>
+        </div>
+        <div class="case-block">
+          <div class="k">Approach</div>
+          <p>Analyzed three months of support ticket logs to identify the 12 query types driving 70% of volume, documented the conversational flows as a decision tree, and defined chatbot scope and handoff rules, signed off by the product owner before development started.</p>
+        </div>
+        <div class="case-result">68% of targeted queries resolved autonomously · support team workload cut 30%</div>
+        <div class="case-tools"><span>Requirements Analysis</span><span>Decision Trees</span><span>Conversational Design</span></div>
+      </div>
+    </div>
+
+    <div class="practice-callout">
+      <div>
+        <div class="ptag">Practice case study · synthetic data</div>
+        <h3>IT incident &amp; change management redesign</h3>
+        <p>A self-directed exercise applying ITIL incident and change management practice: interactive swimlane diagram, gap analysis, phased implementation plan, and projected impact.</p>
+      </div>
+      <a href="incident-change-studio.html" class="btn btn-ghost">View the process studio →</a>
+    </div>
+
+  </div>
+</section>
+
+<section id="ai-projects">
+  <div class="wrap">
+    <div class="section-kicker">Building With AI</div>
+    <h2 class="section-title">Where I use Claude beyond analysis</h2>
+    <p class="ai-intro">Alongside client BA and ERP work, I use Claude as a full build partner to architect and ship complete software products end to end: backend, auth, payments, and AI integration, not just prototypes. This is a proprietary build, so the code stays private; here's what it does and how it's built.</p>
+
+    <div class="ai-grid">
+
+      <div class="ai-card">
+        <div class="ai-visual">
+          <svg viewBox="0 0 240 200" xmlns="http://www.w3.org/2000/svg">
+            <rect x="4" y="4" width="232" height="192" rx="10" fill="var(--bg-alt)" stroke="#e4e2dc"/>
+            <circle cx="20" cy="20" r="3.5" fill="#e4a15c"/>
+            <circle cx="32" cy="20" r="3.5" fill="#d9d6cc"/>
+            <circle cx="44" cy="20" r="3.5" fill="#d9d6cc"/>
+            <text x="20" y="46" font-size="12" font-family="Arial" font-weight="700" fill="#1c1c1a">ApplyStack</text>
+            <text x="20" y="62" font-size="9" font-family="Arial" fill="#55534d">AI resume tailoring</text>
+            <rect x="20" y="76" width="92" height="42" rx="6" fill="#eef3f1"/>
+            <text x="30" y="94" font-size="16" font-family="Arial" font-weight="700" fill="#2f5d50">18</text>
+            <text x="30" y="108" font-size="8" font-family="Arial" fill="#55534d">career niches</text>
+            <rect x="122" y="76" width="92" height="42" rx="6" fill="#eef3f1"/>
+            <text x="132" y="94" font-size="16" font-family="Arial" font-weight="700" fill="#2f5d50">14</text>
+            <text x="132" y="108" font-size="8" font-family="Arial" fill="#55534d">templates</text>
+            <rect x="20" y="128" width="194" height="42" rx="6" fill="#eef3f1"/>
+            <text x="30" y="146" font-size="12" font-family="Arial" font-weight="700" fill="#2f5d50">Resume · Cover letter · ATS score</text>
+            <text x="30" y="160" font-size="8" font-family="Arial" fill="#55534d">+ skills gap · interview prep, one pass</text>
+            <rect x="20" y="176" width="70" height="16" rx="8" fill="#2f5d50"/>
+            <text x="55" y="187" font-size="8" font-family="Arial" fill="white" text-anchor="middle" font-weight="700">$9/mo Pro</text>
+          </svg>
+        </div>
+        <div class="ai-copy">
+          <span class="ai-status live">Live product</span>
+          <h3>ApplyStack: AI resume tailoring platform</h3>
+          <div class="ai-client">Solo-built, in production · positive early feedback from colleagues and friends using it</div>
+          <div class="case-block">
+            <div class="k">Problem</div>
+            <p>Job seekers rewrite the same resume over and over, guessing at what each job description actually wants emphasized.</p>
+          </div>
+          <div class="case-block">
+            <div class="k">Approach</div>
+            <p>Architected and built a full SaaS product with Claude as build partner: Node.js/Express backend, JWT auth, Stripe subscriptions, and a direct Claude API integration (Sonnet for tailoring, Haiku for lighter tasks) that rewrites a resume against any job description across 18 career niches and 14 templates, plus ATS scoring, skills-gap analysis, and interview prep generation, all from a vanilla JS frontend with no build step.</p>
+          </div>
+          <div class="case-tools"><span>Node.js / Express</span><span>Claude API</span><span>Stripe</span><span>JWT auth</span></div>
+          <a href="https://tailorcv-onb9.onrender.com/" target="_blank" class="ai-link">Try it live →</a>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<section id="experience" style="background:var(--bg-alt);">
+  <div class="wrap">
+    <div class="section-kicker">Experience</div>
+    <h2 class="section-title">Where I've worked</h2>
+    <div class="timeline">
+      <div class="timeline-item">
+        <div class="role-title">Business Systems Analyst · JL13 Concepts Inc</div>
+        <div class="role-meta">Canada · Nov 2024 – Present</div>
+        <p>ERP configuration and business analysis across distribution and professional services clients, spanning Dynamics NAV/D365 Business Central, Power BI reporting, and IT strategy roadmaps.</p>
+      </div>
+      <div class="timeline-item">
+        <div class="role-title">IT Technical Support (Volunteer) · Power of Early Vision Foundation</div>
+        <div class="role-meta">Canada · Feb 2024 – Present</div>
+        <p>Event technology setup and on-site AV support, plus website and digital communications support for a nonprofit's registration and program systems.</p>
+      </div>
+      <div class="timeline-item">
+        <div class="role-title">Business Systems Analyst · Heels &amp; Tech</div>
+        <div class="role-meta">Nigeria · Jan 2022 – Sep 2023</div>
+        <p>Led requirements and process design for a digital onboarding platform and an AI support chatbot, including Figma wireframes, BRDs, and Agile sprint delivery.</p>
+      </div>
+      <div class="timeline-item">
+        <div class="role-title">Business Analyst · L&amp;T OY (Contract)</div>
+        <div class="role-meta">Finland · Jan 2021 – Dec 2021</div>
+        <p>Analyzed multi-site cleaning operations, defined functional specs for scheduling and inspection systems, and built a Power BI KPI dashboard for real-time operational visibility.</p>
+      </div>
+      <div class="timeline-item">
+        <div class="role-title">Quality Assurance Analyst · Aritek Consulting</div>
+        <div class="role-meta">Finland · Apr 2019 – Dec 2020</div>
+        <p>Built test strategies and automated regression suites for mobile payments and e-commerce platforms; led UAT and caught critical defects pre-release.</p>
+      </div>
+      <div class="timeline-item">
+        <div class="role-title">Junior Environmental Compliance &amp; Data Analyst · Eurofins</div>
+        <div class="role-meta">Finland · Sep 2018 – Mar 2019</div>
+        <p>Analyzed environmental monitoring data for regulatory submissions and developed standardized data governance procedures adopted as team standard.</p>
+      </div>
+      <div class="timeline-item">
+        <div class="role-title">Freelance Software Tester (Part-time) · uTest</div>
+        <div class="role-meta">Finland · Mar 2018 – Aug 2020</div>
+        <p>Exploratory and functional testing across 20+ applications in banking, entertainment, and e-commerce; 90+ accepted bug reports.</p>
+      </div>
+    </div>
+
+    <div class="misc-grid">
+      <div>
+        <h3>Certifications &amp; Training</h3>
+        <ul>
+          <li><b>CBAP</b> · Certified Business Analysis Professional, IIBA</li>
+          <li><b>Business Process Consultant</b> · ServiceNow University</li>
+          <li><b>Business Analysis Fundamentals</b></li>
+          <li><b>Quality Assurance Fundamentals</b></li>
+        </ul>
+      </div>
+      <div>
+        <h3>Education</h3>
+        <ul>
+          <li><b>M.Sc. Aquatic Science</b> · University of Jyväskylä, Finland</li>
+          <li><b>B.Sc. Geography</b> · University of Ibadan, Nigeria</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="contact">
+  <div class="wrap">
+    <div class="contact-section">
+      <div>
+        <h2>Let's talk.</h2>
+        <p>Open to remote and hybrid Business Analyst / ERP Functional Consultant roles across Canada. Reach out directly.</p>
+      </div>
+      <div class="contact-actions">
+        <a href="mailto:emmanuel.adoga91@gmail.com" class="btn btn-primary">✉️ Email Me</a>
+        <a href="Emmanuel_Adoga_Resume.pdf" target="_blank" class="btn btn-ghost">📄 Resume</a>
+        <a href="#" class="btn btn-ghost" title="Add your LinkedIn URL">🔗 LinkedIn</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  © <span id="year"></span> Emmanuel Adoga. Built with care.
+</footer>
+
+<script>
+  document.getElementById('year').textContent = new Date().getFullYear();
+
+  function simTween(el, from, to, suffix, duration){
+    var start = null;
+    function step(ts){
+      if(!start) start = ts;
+      var p = Math.min((ts - start) / duration, 1);
+      var val = Math.round(from + (to - from) * p);
+      el.textContent = val + suffix;
+      if(p < 1) requestAnimationFrame(step);
+    }
+    requestAnimationFrame(step);
+  }
+
+  function simSetState(btn, state){
+    var sim = btn.closest('.sim');
+    sim.querySelectorAll('.sim-btn').forEach(function(b){ b.classList.toggle('active', b === btn); });
+
+    sim.querySelectorAll('.sim-step[data-issue]').forEach(function(step){
+      var dot = step.querySelector('.sim-dot');
+      var note = step.querySelector('.sim-step-note');
+      if(state === 'asis'){
+        dot.className = 'sim-dot issue';
+        note.textContent = step.getAttribute('data-issue');
+      } else {
+        dot.className = 'sim-dot fixed';
+        note.textContent = step.getAttribute('data-fix');
+      }
+    });
+
+    sim.querySelectorAll('.sim-val').forEach(function(val){
+      var from = parseInt(val.textContent, 10);
+      var to = parseInt(val.getAttribute('data-' + state), 10);
+      var suffix = val.getAttribute('data-suffix') || '';
+      simTween(val, from, to, suffix, 450);
+    });
+  }
+</script>
+
+</body>
+</html>
