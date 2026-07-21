@@ -56,9 +56,15 @@
   .approach-step h3{font-size:0.92rem;margin-bottom:6px;}
   .approach-step p{font-size:0.82rem;color:var(--ink-soft);}
 
-  .shot{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:14px;margin-top:20px;}
-  .shot-caption{font-size:0.8rem;color:var(--ink-soft);margin-top:12px;text-align:center;}
-  .shot-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-top:8px;}
+  .config-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:20px;}
+  .config-card{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:20px 22px;}
+  .config-card h3{font-size:0.9rem;margin-bottom:12px;}
+  .config-card ul{margin:0;list-style:none;}
+  .config-card li{font-size:0.86rem;color:var(--ink-soft);padding:7px 0;border-bottom:1px solid var(--line);display:flex;justify-content:space-between;gap:12px;}
+  .config-card li:last-child{border-bottom:none;}
+  .config-card li b{color:var(--ink);font-weight:600;}
+  .config-card .on{color:var(--accent);font-weight:700;}
+  .config-card .off{color:#a34a2f;font-weight:700;}
 
   .result-banner{
     margin-top:36px;background:var(--ink);color:#f4f3ef;border-radius:var(--radius);padding:28px 30px;
@@ -156,16 +162,28 @@
   <div class="wrap">
     <div class="section-kicker">Execution</div>
     <h2 class="section-title">Configuring the Sales Representative profile</h2>
-    <p class="prose" style="margin-bottom:8px;">Screenshots from the actual HubSpot user-creation flow, configuring one of the Sales Representative invites against the mapping key.</p>
+    <p class="prose" style="margin-bottom:8px;">The permission set applied to one of the Sales Representative invites, translated from the mapping key into HubSpot's object and tool-level access controls.</p>
 
-    <div class="shot-grid">
-      <div class="shot">
-        <img src="hubspot-1-contacts.jpg" alt="HubSpot Contacts object permissions configuration screen">
-        <div class="shot-caption">Contacts: view/create/edit scoped to owned + unassigned records; delete and merge restricted to owned records only.</div>
+    <div class="config-grid">
+      <div class="config-card">
+        <h3>Contacts (object access)</h3>
+        <ul>
+          <li><b>View</b> <span class="on">Owned + unassigned</span></li>
+          <li><b>Create</b> <span class="on">Enabled</span></li>
+          <li><b>Edit</b> <span class="on">Owned + unassigned</span></li>
+          <li><b>Delete</b> <span class="on">Owned only</span></li>
+          <li><b>Merge</b> <span class="on">Owned only</span></li>
+        </ul>
       </div>
-      <div class="shot">
-        <img src="hubspot-2-crmtools.jpg" alt="HubSpot CRM Tools permissions configuration screen">
-        <div class="shot-caption">CRM Tools: bulk delete, import, and export switched off, enforcing the "no export rights" rule for this role.</div>
+      <div class="config-card">
+        <h3>CRM tools</h3>
+        <ul>
+          <li><b>Bulk delete</b> <span class="off">Off</span></li>
+          <li><b>Import</b> <span class="off">Off</span></li>
+          <li><b>Export</b> <span class="off">Off</span></li>
+          <li><b>Workflows</b> <span class="off">Off</span></li>
+          <li><b>Reports</b> <span class="on">View only</span></li>
+        </ul>
       </div>
     </div>
 
