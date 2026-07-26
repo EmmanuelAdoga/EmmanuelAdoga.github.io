@@ -3,8 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>HubSpot Practice: CRM Administration | Emmanuel Adoga</title>
-<meta name="description" content="Self-directed HubSpot practice: user provisioning and role-based permission mapping in a CRM administration exercise.">
+<title>HubSpot Practice: CRM Administration &amp; Onboarding Import | Emmanuel Adoga</title>
+<meta name="description" content="Self-directed HubSpot practice: user provisioning and role-based permission mapping, plus setting up a CRM onboarding workflow with data cleanup, standardization, and pipeline import.">
 <style>
   :root{
     --bg:#fafaf9;--bg-alt:#f2f1ee;--ink:#1c1c1a;--ink-soft:#55534d;--line:#e4e2dc;
@@ -72,12 +72,48 @@
   .result-banner h3{font-size:1rem;margin-bottom:8px;color:#fff;}
   .result-banner p{color:#c9c7bf;font-size:0.92rem;}
 
+  .jump-row{display:flex;flex-wrap:wrap;gap:10px 22px;margin-top:20px;}
+  .jump-row a{font-size:0.82rem;font-weight:600;color:var(--accent);border-bottom:1px solid transparent;}
+  .jump-row a:hover{border-bottom-color:var(--accent);}
+
+  .map-table{width:100%;border-collapse:collapse;margin-top:20px;background:var(--card);border:1px solid var(--line);border-radius:var(--radius);overflow:hidden;font-size:0.86rem;}
+  .map-table th{text-align:left;background:var(--bg-alt);color:var(--ink-soft);font-size:0.72rem;text-transform:uppercase;letter-spacing:0.06em;padding:10px 14px;border-bottom:1px solid var(--line);}
+  .map-table td{padding:12px 14px;border-bottom:1px solid var(--line);color:var(--ink-soft);vertical-align:top;}
+  .map-table tr:last-child td{border-bottom:none;}
+  .map-table td.src{color:var(--ink);font-weight:600;}
+  .map-table td.dst{color:var(--accent);font-weight:600;white-space:nowrap;}
+
+  .stage-callout{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:24px;}
+  .stage-box{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:20px 22px;}
+  .stage-box h3{font-size:0.82rem;text-transform:uppercase;letter-spacing:0.05em;color:var(--ink-soft);margin-bottom:12px;}
+  .stage-box ol,.stage-box ul{margin:0;padding-left:18px;color:var(--ink-soft);font-size:0.88rem;}
+  .stage-box li{margin-bottom:7px;}
+  .stage-box.added{border:1px solid var(--accent);background:var(--accent-soft);}
+  .stage-box.added h3{color:var(--accent);}
+  .stage-box .added-pill{display:inline-block;background:var(--accent);color:#fff;font-size:0.68rem;font-weight:700;text-transform:uppercase;letter-spacing:0.05em;padding:3px 9px;border-radius:999px;margin-bottom:10px;}
+  .stage-box .added-why{margin-top:12px;font-size:0.84rem;color:var(--ink-soft);border-top:1px solid var(--line);padding-top:12px;}
+
+  .pipeline-board{display:grid;grid-template-columns:repeat(6,1fr);gap:12px;margin-top:24px;overflow-x:auto;}
+  .stage-col{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:14px;min-width:0;}
+  .stage-col .dot{display:inline-block;width:8px;height:8px;border-radius:50%;margin-right:6px;}
+  .stage-col h4{font-size:0.76rem;line-height:1.3;margin-bottom:2px;}
+  .stage-col .count{font-size:0.72rem;color:var(--ink-soft);margin-bottom:10px;}
+  .stage-col .total{font-size:1.05rem;font-weight:700;margin-bottom:2px;}
+  .stage-col .weighted{font-size:0.74rem;color:var(--ink-soft);}
+  .stage-col.won .total{color:var(--accent);}
+  .stage-col.lost .total{color:#a34a2f;}
+
   footer{padding:36px 0 56px;text-align:center;color:var(--ink-soft);font-size:0.82rem;}
 
   @media (max-width:900px){
     .approach-grid{grid-template-columns:1fr 1fr;}
     .role-grid{grid-template-columns:1fr;}
     .shot-grid{grid-template-columns:1fr;}
+    .stage-callout{grid-template-columns:1fr;}
+    .pipeline-board{grid-template-columns:repeat(3,1fr);}
+  }
+  @media (max-width:600px){
+    .pipeline-board{grid-template-columns:repeat(2,1fr);}
   }
 </style>
 </head>
@@ -94,20 +130,24 @@
 
 <section class="hero">
   <div class="wrap">
-    <div class="kicker">Practice Exercise · CRM Administration</div>
-    <h1>HubSpot user provisioning &amp; role-based permission mapping</h1>
-    <p class="lede">A self-directed HubSpot practice exercise built around a realistic brief: inviting new hires to a HubSpot portal with permissions scoped precisely to department and seniority, rather than default role templates. First in a small series of hands-on HubSpot administration exercises.</p>
+    <div class="kicker">Practice Exercises · CRM Administration</div>
+    <h1>HubSpot user provisioning, permission mapping &amp; CRM data import</h1>
+    <p class="lede">Two self-directed HubSpot practice exercises built around realistic briefs: inviting new hires to a HubSpot portal with permissions scoped precisely to department and seniority, and setting up the onboarding workflow for a company moving onto HubSpot, cleaning, standardizing, and importing a deliberately messy CRM dataset as new contacts, companies, and deals moving through a properly structured pipeline.</p>
     <div class="meta-row">
       <span><b>Scenario</b> · Company scaling its sales &amp; marketing team, 5 new hires</span>
       <span><b>Method</b> · Permission mapping, per-user access configuration</span>
       <span><b>Tools</b> · HubSpot Settings, CRM object &amp; tool permissions</span>
     </div>
+    <div class="jump-row">
+      <a href="#exercise-1">Exercise 1 · User Provisioning &amp; Permissions ↓</a>
+      <a href="#exercise-2">Exercise 2 · CRM Onboarding, Data Cleanup &amp; Import ↓</a>
+    </div>
   </div>
 </section>
 
-<section>
+<section id="exercise-1">
   <div class="wrap">
-    <div class="section-kicker">Brief</div>
+    <div class="section-kicker">Exercise 1 · Brief</div>
     <h2 class="section-title">Not a simple bulk invite</h2>
     <div class="prose">
       <p>The brief: a company scaling its sales and marketing team needed 5 new hires added to HubSpot. The catch was that each user needed permissions scoped specifically to their department and seniority level, governed by a permission mapping key rather than a single default role.</p>
@@ -190,6 +230,120 @@
     <div class="result-banner">
       <h3>Result</h3>
       <p>All 5 users provisioned with role-correct access: no one was over-permissioned (representatives can view and edit their own contacts but can't bulk-delete or export data), and seat types matched actual license needs rather than defaulting everyone to a paid seat, avoiding paying for Sales Hub access where a Free seat covered Marketing and Operations.</p>
+    </div>
+  </div>
+</section>
+
+<section id="exercise-2">
+  <div class="wrap">
+    <div class="section-kicker">Exercise 2 · Brief</div>
+    <h2 class="section-title">Onboarding a company's data into HubSpot</h2>
+    <div class="prose">
+      <p>The brief this time: set up the onboarding workflow for a company moving onto HubSpot for the first time, taking a raw export of contact, company, and deal records (the kind of spreadsheet a company migrating off manual tracking would actually hand over) and turning it into new, correctly structured contacts, companies, and deals moving through defined deal stages, rather than a faster way to store the same mess.</p>
+      <p>The source file (98 contact rows, 47 companies, 44 deals once split into HubSpot's object model) had every problem a real first-time onboarding import tends to surface. Fixing it meant working the data in Excel before it ever touched HubSpot, then deciding where HubSpot's default schema was enough and where it needed to be extended so every new record and deal stage would onboard cleanly.</p>
+    </div>
+
+    <div class="section-kicker" style="margin-top:36px;">Data Quality Issues Found</div>
+    <h2 class="section-title">What the raw export actually looked like</h2>
+    <div class="role-grid">
+      <div class="role-card">
+        <span class="rtag">Formatting</span>
+        <h3>Inconsistent casing &amp; phone formats</h3>
+        <p>Names, job titles, and company names mixed ALL CAPS, lowercase, and Title Case. Phone numbers appeared in several different formats for the same field, with no consistent structure.</p>
+      </div>
+      <div class="role-card">
+        <span class="rtag">Lifecycle &amp; Deal Stages</span>
+        <h3>Overlapping stage labels</h3>
+        <p>Values like "MQL" and "Marketing Qualified Lead" were used interchangeably for the same status, and casing varied on stages like "Lead" from row to row.</p>
+      </div>
+      <div class="role-card">
+        <span class="rtag">Geography</span>
+        <h3>Inconsistent country values</h3>
+        <p>The same country appeared as "USA," "US," "United States," and "u.s.a." across different records, which would have fragmented reporting and list segmentation by region.</p>
+      </div>
+      <div class="role-card">
+        <span class="rtag">Dates &amp; Currency</span>
+        <h3>Mixed date &amp; currency formats</h3>
+        <p>Close dates mixed ISO, US, and European formats in the same column, some with a "TBD" placeholder. Deal amounts and revenue mixed raw numbers, symbols, currency codes, and non-USD values.</p>
+      </div>
+      <div class="role-card">
+        <span class="rtag">Duplicates</span>
+        <h3>Duplicate contact &amp; company records</h3>
+        <p>The same person and company appeared more than once under slightly different spellings, which would have split their activity history and deal attribution across two records.</p>
+      </div>
+      <div class="role-card">
+        <span class="rtag">Completeness</span>
+        <h3>Missing required fields</h3>
+        <p>A number of records were missing a first name, email address, or deal owner, values HubSpot needs for accurate matching on import and for reporting to resolve correctly afterward.</p>
+      </div>
+    </div>
+
+    <div class="section-kicker" style="margin-top:36px;">Approach</div>
+    <h2 class="section-title">Clean first, import once</h2>
+    <div class="approach-grid">
+      <div class="approach-step"><div class="n">01</div><h3>Audit against HubSpot's schema</h3><p>Compared every column in the raw export to HubSpot's default contact, company, and deal properties to see what mapped directly and what needed a custom property or stage.</p></div>
+      <div class="approach-step"><div class="n">02</div><h3>Clean &amp; standardize in Excel</h3><p>Normalized casing, phone formats, lifecycle-stage labels, country values, and date formats before the file reached HubSpot, since fixing bad data after import means editing records one by one.</p></div>
+      <div class="approach-step"><div class="n">03</div><h3>Resolve duplicates</h3><p>Identified contact and company records referring to the same person or business under different spellings, so activity and deal history would roll up to one record instead of splitting across two.</p></div>
+      <div class="approach-step"><div class="n">04</div><h3>Map fields for a clean import</h3><p>Matched every standardized column to the correct HubSpot property so the import wizard matched automatically instead of guessing at ambiguous columns.</p></div>
+    </div>
+  </div>
+</section>
+
+<section style="background:var(--bg-alt);">
+  <div class="wrap">
+    <div class="section-kicker">Execution</div>
+    <h2 class="section-title">Mapping cleaned fields to HubSpot's property schema</h2>
+    <p class="prose" style="margin-bottom:8px;">A representative sample of how cleaned source columns were mapped onto HubSpot's default contact, company, and deal properties.</p>
+
+    <table class="map-table">
+      <tr><th>Source column (raw)</th><th>HubSpot property</th><th>What changed</th></tr>
+      <tr><td class="src">3 overlapping phone columns</td><td class="dst">Phone Number</td><td>Collapsed three raw phone formats into one clean, consistently formatted field.</td></tr>
+      <tr><td class="src">First / Last Name (mixed casing)</td><td class="dst">First Name / Last Name</td><td>Standardized to Title Case across all records.</td></tr>
+      <tr><td class="src">Lead / lead / MQL / "Marketing Qualified Lead"</td><td class="dst">Lifecycle Stage</td><td>Mapped to HubSpot's standard lifecycle stage values (Subscriber, Lead, MQL, SQL, Opportunity, Customer).</td></tr>
+      <tr><td class="src">USA / US / u.s.a. / United States</td><td class="dst">Country/Region</td><td>Standardized to one consistent value per country for clean segmentation.</td></tr>
+      <tr><td class="src">$48M / 12000000 / CAD 9,000,000</td><td class="dst">Amount / Annual Revenue</td><td>Converted to a consistent numeric format; flagged non-USD values for review before import.</td></tr>
+      <tr><td class="src">2026-03-14 / 15/07/2026 / "TBD"</td><td class="dst">Close Date / Create Date</td><td>Standardized to one date format; flagged placeholder values like "TBD" instead of importing them as dates.</td></tr>
+      <tr><td class="src">"Negotiation" (not a default stage)</td><td class="dst">Deal Stage <em>(custom)</em></td><td>Added as a new stage on the Sales Pipeline, see below.</td></tr>
+    </table>
+
+    <div class="section-kicker" style="margin-top:36px;">Schema Extension</div>
+    <h2 class="section-title">Adding a deal stage HubSpot didn't have by default</h2>
+    <div class="stage-callout">
+      <div class="stage-box">
+        <h3>HubSpot's default Sales Pipeline</h3>
+        <ol>
+          <li>Appointment Scheduled</li>
+          <li>Qualified to Buy</li>
+          <li>Presentation Scheduled</li>
+          <li>Decision Maker Bought-In</li>
+          <li>Contract Sent</li>
+          <li>Closed Won / Closed Lost</li>
+        </ol>
+      </div>
+      <div class="stage-box added">
+        <span class="added-pill">Added</span>
+        <h3 style="text-transform:none;letter-spacing:normal;">Negotiation</h3>
+        <p style="font-size:0.88rem;color:var(--ink-soft);">Inserted after Contract Sent to represent deals actively being negotiated, terms under discussion or legal review, after paperwork went out but before either side signed off.</p>
+        <div class="added-why"><b>Why it mattered:</b> Several deals in the source data sat in exactly this state. Without the stage, they'd either get force-fit into "Contract Sent" (overstating progress) or "Decision Maker Bought-In" (understating it), both of which would have thrown off forecast accuracy.</div>
+      </div>
+    </div>
+
+    <div class="section-kicker" style="margin-top:36px;">Result</div>
+    <h2 class="section-title">The pipeline in Board view</h2>
+    <p class="prose" style="margin-bottom:8px;">Deals imported cleanly and reorganized into HubSpot's Board view, grouped by stage, so pipeline health reads at a glance instead of being buried in a table.</p>
+
+    <div class="pipeline-board">
+      <div class="stage-col"><span class="dot" style="background:#c2578f;"></span><h4>Presentation Scheduled</h4><div class="count">6 deals</div><div class="total">$391,000</div><div class="weighted">$234,600 weighted (60%)</div></div>
+      <div class="stage-col"><span class="dot" style="background:#7b5fc4;"></span><h4>Decision Maker Bought-In</h4><div class="count">4 deals</div><div class="total">$240,000</div><div class="weighted">$192,000 weighted (80%)</div></div>
+      <div class="stage-col"><span class="dot" style="background:var(--accent2);"></span><h4>Contract Sent</h4><div class="count">4 deals</div><div class="total">$686,000</div><div class="weighted">$617,400 weighted (90%)</div></div>
+      <div class="stage-col won"><span class="dot" style="background:var(--accent);"></span><h4>Closed Won</h4><div class="count">9 deals</div><div class="total">$1.4M</div><div class="weighted">Won (100%)</div></div>
+      <div class="stage-col lost"><span class="dot" style="background:#a34a2f;"></span><h4>Closed Lost</h4><div class="count">2 deals</div><div class="total">$0</div><div class="weighted">Lost (0%)</div></div>
+      <div class="stage-col"><span class="dot" style="background:#2f8f7a;"></span><h4>Negotiation</h4><div class="count">3 deals</div><div class="total">$565,000</div><div class="weighted">$113,000 weighted (20%)</div></div>
+    </div>
+
+    <div class="result-banner">
+      <h3>Result</h3>
+      <p>A raw, inconsistent export turned into a fully onboarded HubSpot instance: 98 new contacts and 47 new companies with standardized, de-duplicated properties, and 44 new deals onboarded onto a Sales Pipeline extended with the one stage the default schema was missing. Switching the deals view from Table to Board turned a flat list into a pipeline that's actually readable, six stages, deal counts, and weighted value visible in one screen instead of scrolling a spreadsheet.</p>
     </div>
   </div>
 </section>
