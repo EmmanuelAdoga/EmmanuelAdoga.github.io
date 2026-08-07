@@ -1,0 +1,451 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cycle Count Reconciler — Infor VISUAL</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+<style>
+  :root{
+    --navy:#1a3a5c; --navy-light:#2d5580; --gold:#b8860b; --bg:#f4f6f8;
+    --green:#1e7d46; --green-bg:#e3f4ea; --red:#b3261e; --red-bg:#fdecea;
+    --amber:#8a5a00; --amber-bg:#fff4d6; --grey:#5f6b76; --grey-bg:#eceff2;
+    --purple:#5b3b8c; --purple-bg:#efe8fa; --border:#d9dfe5;
+  }
+  *{box-sizing:border-box; margin:0; padding:0;}
+  body{font-family:'Segoe UI',system-ui,-apple-system,sans-serif; background:var(--bg); color:#22303c; padding-bottom:60px;}
+  .skip-link{position:absolute; left:-999px; top:0; background:var(--navy); color:#fff; padding:10px 16px; z-index:200; border-radius:0 0 6px 0; font-size:13px;}
+  .skip-link:focus{left:0;}
+  :focus-visible{outline:3px solid var(--gold); outline-offset:2px;}
+  .sr-only{position:absolute; width:1px; height:1px; padding:0; margin:-1px; overflow:hidden; clip:rect(0,0,0,0); white-space:nowrap; border:0;}
+  header{background:var(--navy); color:#fff; padding:22px 32px;}
+  header h1{font-size:21px; font-weight:600;}
+  header p{font-size:13px; opacity:.75; margin-top:4px;}
+  main{max-width:1100px; margin:0 auto; padding:24px 20px;}
+  .step{background:#fff; border:1px solid var(--border); border-radius:10px; padding:20px 24px; margin-bottom:20px;}
+  .step h2{font-size:15px; color:var(--navy); display:flex; align-items:center; gap:10px; margin-bottom:6px;}
+  .stepnum{background:var(--navy); color:#fff; width:24px; height:24px; border-radius:50%; display:inline-flex; align-items:center; justify-content:center; font-size:12px; flex:0 0 24px;}
+  .hint{font-size:12.5px; color:var(--grey); margin-bottom:14px;}
+  .row{display:flex; gap:10px; flex-wrap:wrap; align-items:center;}
+  button{background:var(--navy); color:#fff; border:none; border-radius:6px; padding:9px 16px; font-size:13px; cursor:pointer; font-family:inherit;}
+  button:hover{background:var(--navy-light);}
+  button.secondary{background:#fff; color:var(--navy); border:1px solid var(--navy);}
+  button.secondary:hover{background:var(--grey-bg);}
+  button.gold{background:var(--gold);}
+  input[type=file]{display:none;}
+  select,input[type=text],input[type=number]{border:1px solid var(--border); border-radius:6px; padding:8px 10px; font-size:13px; font-family:inherit;}
+  input[type=number]{width:90px;}
+  label{font-size:13px;}
+  table{width:100%; border-collapse:collapse; font-size:13px; margin-top:12px;}
+  th{text-align:left; background:var(--grey-bg); color:var(--navy); padding:8px 10px; font-size:12px; text-transform:uppercase; letter-spacing:.4px; position:sticky; top:0;}
+  td{padding:7px 10px; border-bottom:1px solid #edf0f3;}
+  tr:hover td{background:#f8fafc;}
+  .badge{display:inline-block; padding:3px 10px; border-radius:12px; font-size:11.5px; font-weight:600;}
+  .b-match{background:var(--green-bg); color:var(--green);}
+  .b-over{background:var(--amber-bg); color:var(--amber);}
+  .b-short{background:var(--red-bg); color:var(--red);}
+  .b-nocount{background:var(--grey-bg); color:var(--grey);}
+  .b-novis{background:var(--purple-bg); color:var(--purple);}
+  .kpis{display:grid; grid-template-columns:repeat(auto-fit,minmax(140px,1fr)); gap:12px; margin:14px 0;}
+  .kpi{background:#fff; border:1px solid var(--border); border-left:4px solid var(--navy); border-radius:8px; padding:12px 14px;}
+  .kpi .v{font-size:24px; font-weight:700; color:var(--navy);}
+  .kpi .l{font-size:11.5px; color:var(--grey); text-transform:uppercase; letter-spacing:.4px; margin-top:2px;}
+  .kpi.warn{border-left-color:var(--red);} .kpi.warn .v{color:var(--red);}
+  .kpi.ok{border-left-color:var(--green);} .kpi.ok .v{color:var(--green);}
+  .filters{display:flex; gap:8px; flex-wrap:wrap; margin-top:8px;}
+  .chip{border:1px solid var(--border); background:#fff; border-radius:16px; padding:5px 14px; font-size:12.5px; cursor:pointer; color:#333;}
+  .chip.active{background:var(--navy); color:#fff; border-color:var(--navy);}
+  .insight{background:var(--purple-bg); border:1px solid #d9c9f2; border-radius:8px; padding:12px 16px; margin-top:10px; font-size:13px;}
+  .insight b{color:var(--purple);}
+  .summarybox{background:#f0f4f8; border-left:4px solid var(--gold); border-radius:6px; padding:14px 16px; margin-top:14px; font-size:13.5px; line-height:1.55; white-space:pre-wrap;}
+  .tablewrap{max-height:420px; overflow:auto; border:1px solid var(--border); border-radius:8px; margin-top:12px;}
+  .tablewrap table{margin-top:0;}
+  .filemeta{font-size:12.5px; color:var(--green); font-weight:600;}
+  .mapping{display:flex; gap:14px; align-items:center; margin-top:12px; flex-wrap:wrap; font-size:13px;}
+  .searchbar{margin-top:12px;}
+  .searchbar input{width:260px;}
+  .muted{color:var(--grey); font-size:12px;}
+  .var-pos{color:var(--amber); font-weight:700;}
+  .var-neg{color:var(--red); font-weight:700;}
+  .var-zero{color:var(--green);}
+  footer{text-align:center; font-size:11.5px; color:var(--grey); margin-top:10px;}
+  @media (max-width:640px){
+    header{padding:16px 20px;}
+    header h1{font-size:18px;}
+    header p{font-size:12px;}
+    .step{padding:16px;}
+    .searchbar input{width:100%;}
+    input[type=number]{width:70px;}
+    .kpis{grid-template-columns:repeat(2,1fr);}
+  }
+  @media print{
+    .step:not(#step3), header .row, .filters, .searchbar, button, .skip-link{display:none;}
+    #step3{border:none; box-shadow:none; padding:8px 0;}
+  }
+</style>
+</head>
+<body>
+<a href="#main" class="skip-link">Skip to main content</a>
+<header>
+  <h1>Inventory Cycle Count Reconciler</h1>
+  <p>Compare physical counts against the Infor VISUAL on-hand export &middot; automatic discrepancy flagging &middot; anomaly review</p>
+</header>
+<main id="main" tabindex="-1">
+
+  <!-- STEP 1 -->
+  <div class="step" id="step1">
+    <h2><span class="stepnum">1</span> Load the Infor VISUAL export</h2>
+    <p class="hint">Export on-hand inventory from VISUAL as CSV or Excel (part number + on-hand quantity), then load it here. Or load the demo data to try it out.</p>
+    <div class="row">
+      <button onclick="document.getElementById('visfile').click()">Upload VISUAL export (CSV / XLSX)</button>
+      <input type="file" id="visfile" accept=".csv,.xlsx,.xls" onchange="loadVisualFile(this.files[0])">
+      <button class="gold" onclick="loadSample()">Load demo data</button>
+      <span class="filemeta" id="vismeta" aria-live="polite"></span>
+    </div>
+    <div class="mapping" id="mapping" style="display:none">
+      <label for="colPart">Part number column: <select id="colPart" onchange="applyMapping()"></select></label>
+      <label for="colQty">On-hand qty column: <select id="colQty" onchange="applyMapping()"></select></label>
+      <span class="muted" id="mapinfo" aria-live="polite"></span>
+    </div>
+  </div>
+
+  <!-- STEP 2 -->
+  <div class="step" id="step2" style="display:none">
+    <h2><span class="stepnum">2</span> Enter physical counts</h2>
+    <p class="hint">Key counts straight down the grid like a spreadsheet: <b>Enter</b> or <b>&darr;</b> moves to the next part, <b>&uarr;</b> moves back up, and you can <b>paste a column of numbers</b> copied from Excel. Leave blank if not counted. A counts file upload is still available as an alternative.</p>
+    <div class="row">
+      <button class="secondary" onclick="document.getElementById('countfile').click()">Upload counts file (CSV / XLSX)</button>
+      <input type="file" id="countfile" accept=".csv,.xlsx,.xls" onchange="loadCountFile(this.files[0])">
+      <button class="secondary" onclick="clearCounts()">Clear all counts</button>
+      <span class="filemeta" id="countmeta" aria-live="polite"></span>
+    </div>
+    <div class="row" style="margin-top:12px">
+      <label style="display:flex; align-items:center; gap:7px; background:var(--amber-bg); border:1px solid #e8d49a; border-radius:6px; padding:8px 12px; cursor:pointer">
+        <input type="checkbox" id="blind" checked onchange="renderEntry()">
+        <span><b>Blind count mode</b> — VISUAL quantities are hidden during entry so counts can't be copied from the system (recommended control)</span>
+      </label>
+    </div>
+    <div class="searchbar">
+      <label for="search" class="sr-only">Search part number</label>
+      <input type="text" id="search" placeholder="Search part number…" oninput="renderEntry()">
+      <span class="muted" id="progress" aria-live="polite" style="margin-left:12px"></span>
+    </div>
+    <div class="tablewrap"><table id="entrytable" aria-label="Physical count entry grid"></table></div>
+    <div class="row" style="margin-top:12px">
+      <label for="newpart" class="sr-only">Part not in VISUAL</label>
+      <input type="text" id="newpart" placeholder="Part not in VISUAL…" style="width:200px">
+      <label for="newqty" class="sr-only">Quantity</label>
+      <input type="number" id="newqty" placeholder="Qty" min="0">
+      <button class="secondary" onclick="addExtraPart()">Add counted part</button>
+    </div>
+    <div class="row" style="margin-top:16px">
+      <button onclick="runReport()" style="font-size:14px; padding:11px 22px">Generate discrepancy report →</button>
+    </div>
+  </div>
+
+  <!-- STEP 3 -->
+  <div class="step" id="step3" style="display:none">
+    <h2><span class="stepnum">3</span> Discrepancy report</h2>
+    <div class="kpis" id="kpis"></div>
+    <div id="insights"></div>
+    <div class="summarybox" id="summary"></div>
+    <div class="filters" id="filters"></div>
+    <div class="tablewrap"><table id="reporttable" aria-label="Discrepancy report results"><thead><tr><th>Part number</th><th>Physical</th><th>VISUAL</th><th>Variance</th><th>Status</th><th>Review flag</th></tr></thead><tbody></tbody></table></div>
+    <div class="row" style="margin-top:14px">
+      <button onclick="exportCSV()">Export report (CSV)</button>
+      <button class="secondary" onclick="window.print()">Print / save as PDF</button>
+    </div>
+  </div>
+
+  <footer>Built as a process-improvement prototype: structured count capture + automated comparison replaces manual line-by-line reconciliation of handwritten sheets.</footer>
+</main>
+
+<script>
+let rawRows=[], headers=[], system={}, counts={}, extraParts={}, reportRows=[], activeFilter='all', partMeta={}, metaLabels=[];
+
+/* ---------- file loading ---------- */
+function parseFile(file, cb){
+  const ext=file.name.split('.').pop().toLowerCase();
+  if(ext==='csv'){
+    Papa.parse(file,{header:false,skipEmptyLines:true,complete:r=>cb(r.data)});
+  } else {
+    const reader=new FileReader();
+    reader.onload=e=>{
+      const wb=XLSX.read(new Uint8Array(e.target.result),{type:'array'});
+      const ws=wb.Sheets[wb.SheetNames[0]];
+      cb(XLSX.utils.sheet_to_json(ws,{header:1,defval:''}));
+    };
+    reader.readAsArrayBuffer(file);
+  }
+}
+function loadVisualFile(file){
+  if(!file) return;
+  parseFile(file, data=>{
+    if(!data.length){alert('File appears empty.');return;}
+    headers=data[0].map(h=>String(h).trim());
+    rawRows=data.slice(1).filter(r=>r.some(c=>String(c).trim()!==''));
+    document.getElementById('vismeta').textContent='✓ '+file.name+' — '+rawRows.length+' rows';
+    buildMapping();
+  });
+}
+function guessCol(patterns){
+  for(let i=0;i<headers.length;i++){
+    const h=headers[i].toLowerCase().replace(/[_\s-]/g,'');
+    if(patterns.some(p=>h.includes(p))) return i;
+  }
+  return -1;
+}
+function buildMapping(){
+  const selP=document.getElementById('colPart'), selQ=document.getElementById('colQty');
+  selP.innerHTML=''; selQ.innerHTML='';
+  headers.forEach((h,i)=>{selP.add(new Option(h||('Column '+(i+1)),i)); selQ.add(new Option(h||('Column '+(i+1)),i));});
+  let gp=guessCol(['part','item','sku','product','no.','number']); let gq=guessCol(['onhand','qtyonhand','onhandqty','quantity','qty','stock','inventory','onhandquantity']);
+  selP.value = gp>=0?gp:0; selQ.value = gq>=0?gq:(headers.length>1?1:0);
+  document.getElementById('mapping').style.display='flex';
+  applyMapping();
+}
+function applyMapping(){
+  const pi=+document.getElementById('colPart').value, qi=+document.getElementById('colQty').value;
+  let di=guessCol(['desc','name']), li=guessCol(['location','loc','bin','warehouse','site']);
+  if(di===pi||di===qi) di=-1; if(li===pi||li===qi||li===di) li=-1;
+  metaLabels=[]; if(di>=0) metaLabels.push(headers[di]); if(li>=0) metaLabels.push(headers[li]);
+  system={}; partMeta={};
+  let bad=0, tot=0;
+  rawRows.forEach(r=>{
+    const part=String(r[pi]??'').trim();
+    if(!part) return;
+    const q=parseFloat(String(r[qi]).replace(/,/g,''));
+    tot++; if(isNaN(q)) bad++;
+    system[part]=isNaN(q)?0:q;
+    const m=[]; if(di>=0) m.push(r[di]??''); if(li>=0) m.push(r[li]??'');
+    partMeta[part]=m;
+  });
+  const info=document.getElementById('mapinfo');
+  if(tot && bad>tot/2){
+    info.innerHTML='<span style="color:var(--red);font-weight:600">⚠ The selected qty column is mostly non-numeric — pick the correct on-hand quantity column before counting.</span>';
+  } else if(pi===qi){
+    info.innerHTML='<span style="color:var(--red);font-weight:600">⚠ Part and quantity are set to the same column — fix the mapping.</span>';
+  } else {
+    info.textContent=Object.keys(system).length+' unique parts mapped';
+  }
+  document.getElementById('step2').style.display='block';
+  renderEntry();
+}
+function loadCountFile(file){
+  if(!file) return;
+  parseFile(file, data=>{
+    let rows=data;
+    // detect header row
+    if(rows.length && isNaN(parseFloat(rows[0][1]))) rows=rows.slice(1);
+    let applied=0;
+    rows.forEach(r=>{
+      const part=String(r[0]??'').trim(); const q=parseFloat(String(r[1]).replace(/,/g,''));
+      if(!part||isNaN(q)) return;
+      if(part in system){counts[part]=q;} else {extraParts[part]=q;}
+      applied++;
+    });
+    document.getElementById('countmeta').textContent='✓ '+file.name+' — '+applied+' counts applied';
+    renderEntry();
+  });
+}
+function clearCounts(){counts={};extraParts={};document.getElementById('countmeta').textContent='';renderEntry();}
+
+/* ---------- entry table (spreadsheet-style grid) ---------- */
+function esc(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/"/g,'&quot;');}
+function renderEntry(){
+  const q=(document.getElementById('search').value||'').toLowerCase();
+  const blind=document.getElementById('blind').checked;
+  const tbl=document.getElementById('entrytable');
+  let html='<thead><tr><th style="width:36px">#</th><th>Part number</th>';
+  metaLabels.forEach(l=>html+='<th>'+esc(l)+'</th>');
+  html+=(blind?'':'<th>On hand (VISUAL)</th>')+'<th>Physical count</th></tr></thead><tbody>';
+  const parts=Object.keys(system).filter(p=>p.toLowerCase().includes(q));
+  parts.forEach((p,i)=>{
+    let m='';
+    metaLabels.forEach((l,j)=>{m+='<td class="muted">'+esc((partMeta[p]||[])[j]??'')+'</td>';});
+    html+='<tr><td class="muted">'+(i+1)+'</td><td><b>'+esc(p)+'</b></td>'+m+
+      (blind?'':'<td>'+system[p]+'</td>')+
+      '<td><input type="number" min="0" aria-label="Physical count for '+esc(p)+'" data-part="'+esc(p)+'" data-i="'+i+'" value="'+((p in counts)?counts[p]:'')+'"></td></tr>';
+  });
+  Object.keys(extraParts).filter(p=>p.toLowerCase().includes(q)).forEach(p=>{
+    html+='<tr><td class="muted">+</td><td><b>'+esc(p)+'</b> <span class="muted">(not in VISUAL)</span></td>'+
+      metaLabels.map(()=>'<td></td>').join('')+(blind?'':'<td>—</td>')+'<td>'+extraParts[p]+'</td></tr>';
+  });
+  tbl.innerHTML=html+'</tbody>';
+  updateProgress();
+}
+function updateProgress(){
+  const total=Object.keys(system).length;
+  const counted=Object.keys(counts).filter(p=>p in system).length;
+  const el=document.getElementById('progress');
+  if(el) el.textContent=total?counted+' of '+total+' parts counted':'';
+}
+/* spreadsheet behaviour: Enter/arrows navigate, paste fills down */
+const grid=document.getElementById('entrytable');
+grid.addEventListener('input',e=>{
+  const inp=e.target.closest('input[data-part]'); if(!inp) return;
+  const p=inp.dataset.part;
+  if(inp.value==='') delete counts[p]; else counts[p]=parseFloat(inp.value);
+  updateProgress();
+});
+grid.addEventListener('keydown',e=>{
+  const inp=e.target.closest('input[data-i]'); if(!inp) return;
+  if(e.key==='Enter'||e.key==='ArrowDown'||e.key==='ArrowUp'){
+    e.preventDefault();
+    const next=+inp.dataset.i+(e.key==='ArrowUp'?-1:1);
+    const t=grid.querySelector('input[data-i="'+next+'"]');
+    if(t){t.focus(); t.select();}
+  }
+});
+grid.addEventListener('paste',e=>{
+  const inp=e.target.closest('input[data-i]'); if(!inp) return;
+  const text=(e.clipboardData||window.clipboardData).getData('text');
+  const vals=text.split(/\r?\n/).map(v=>v.trim()).filter(v=>v!=='');
+  if(vals.length<2) return; // single value: default paste
+  e.preventDefault();
+  let i=+inp.dataset.i, last=inp;
+  vals.forEach(v=>{
+    const t=grid.querySelector('input[data-i="'+i+'"]'); i++;
+    if(!t) return;
+    const q=parseFloat(v.replace(/,/g,''));
+    if(isNaN(q)) return;
+    t.value=q; counts[t.dataset.part]=q; last=t;
+  });
+  last.focus(); updateProgress();
+});
+function addExtraPart(){
+  const p=document.getElementById('newpart').value.trim(), q=parseFloat(document.getElementById('newqty').value);
+  if(!p||isNaN(q)){alert('Enter a part number and quantity.');return;}
+  if(p in system){counts[p]=q;} else {extraParts[p]=q;}
+  document.getElementById('newpart').value='';document.getElementById('newqty').value='';
+  renderEntry();
+}
+
+/* ---------- report ---------- */
+function classify(phys,vis){
+  if(phys===null) return ['Not counted','b-nocount'];
+  if(vis===null) return ['Not in VISUAL','b-novis'];
+  const v=phys-vis;
+  if(v===0) return ['Match','b-match'];
+  return v>0?['Over','b-over']:['Short','b-short'];
+}
+function isTransposition(a,b){
+  const s1=String(Math.abs(a)), s2=String(Math.abs(b));
+  return s1.length===s2.length && s1!==s2 && s1.split('').sort().join('')===s2.split('').sort().join('');
+}
+function runReport(){
+  reportRows=[];
+  Object.keys(system).forEach(p=>{
+    const phys=(p in counts)?counts[p]:null;
+    const [status,cls]=classify(phys,system[p]);
+    reportRows.push({part:p,phys,vis:system[p],variance:phys===null?null:phys-system[p],status,cls,flag:''});
+  });
+  Object.keys(extraParts).forEach(p=>{
+    reportRows.push({part:p,phys:extraParts[p],vis:null,variance:null,status:'Not in VISUAL',cls:'b-novis',flag:'Verify part number or check if the item was never received into VISUAL'});
+  });
+  // anomaly checks
+  reportRows.forEach(r=>{
+    if(r.variance===null||r.variance===0) return;
+    if(isTransposition(r.phys,r.vis)) r.flag='Possible digit transposition ('+r.phys+' vs '+r.vis+') — recount before adjusting';
+    else if(r.vis>0 && r.phys>0 && (r.phys%r.vis===0||r.vis%r.phys===0)) r.flag='Variance is an exact multiple — possible unit-of-measure or pack-size issue';
+    else if(Math.abs(r.variance)>=10) r.flag='Large variance — prioritize recount';
+  });
+  // family clustering
+  const famIssues={};
+  reportRows.filter(r=>(r.variance!==null&&r.variance!==0)||r.status==='Not in VISUAL').forEach(r=>{
+    const fam=r.part.split('-').slice(0,2).join('-');
+    famIssues[fam]=(famIssues[fam]||0)+1;
+  });
+  const clusters=Object.entries(famIssues).filter(([f,n])=>n>=2);
+
+  // KPIs
+  const total=Object.keys(system).length;
+  const counted=reportRows.filter(r=>r.phys!==null&&r.vis!==null).length;
+  const matched=reportRows.filter(r=>r.status==='Match').length;
+  const disc=reportRows.filter(r=>r.status==='Over'||r.status==='Short').length;
+  const notCounted=reportRows.filter(r=>r.status==='Not counted').length;
+  const notInVis=reportRows.filter(r=>r.status==='Not in VISUAL').length;
+  const acc=counted?Math.round(matched/counted*1000)/10:0;
+  document.getElementById('kpis').innerHTML=
+    kpi(total,'Parts in VISUAL')+kpi(counted,'Compared')+
+    kpi(matched,'Matched','ok')+kpi(disc,'Discrepancies',disc?'warn':'ok')+
+    kpi(notCounted,'Not counted')+kpi(notInVis,'Not in VISUAL',notInVis?'warn':'')+
+    kpi(acc+'%','Count accuracy',acc>=95?'ok':'warn');
+
+  // insights
+  let ins='';
+  const flagged=reportRows.filter(r=>r.flag);
+  if(clusters.length) ins+='<div class="insight"><b>Pattern detected:</b> discrepancies cluster in the '+clusters.map(c=>'<b>'+c[0]+'</b> ('+c[1]+' issues)').join(', ')+' part family — check for a shared root cause (location, receiving process, or recent transactions) rather than treating them as isolated errors.</div>';
+  if(flagged.length) ins+='<div class="insight"><b>Anomaly review:</b> '+flagged.length+' row(s) carry review flags (transposition, unit-of-measure, or large-variance patterns). Recount flagged parts before posting adjustments to VISUAL.</div>';
+  document.getElementById('insights').innerHTML=ins;
+
+  // narrative summary
+  const worst=reportRows.filter(r=>r.variance).sort((a,b)=>Math.abs(b.variance)-Math.abs(a.variance)).slice(0,3);
+  let s='CYCLE COUNT SUMMARY — '+new Date().toLocaleDateString('en-CA')+'\n';
+  s+=counted+' of '+total+' parts were counted and compared against VISUAL ('+acc+'% accuracy). ';
+  s+=matched+' matched exactly; '+disc+' showed variances'+(notInVis?'; '+notInVis+' counted part(s) do not exist in VISUAL':'')+'.';
+  if(worst.length) s+='\nLargest variances: '+worst.map(r=>r.part+' ('+(r.variance>0?'+':'')+r.variance+')').join(', ')+'.';
+  if(notCounted) s+='\n'+notCounted+' part(s) were not counted — schedule them for the next count cycle so no item goes unverified.';
+  s+='\nRecommended action: recount flagged rows, investigate clustered families, then post approved adjustments in VISUAL.';
+  document.getElementById('summary').textContent=s;
+
+  renderFilterChips();
+  renderReport();
+  document.getElementById('step3').style.display='block';
+  document.getElementById('step3').scrollIntoView({behavior:'smooth'});
+}
+function kpi(v,l,cls){return '<div class="kpi '+(cls||'')+'"><div class="v">'+v+'</div><div class="l">'+l+'</div></div>';}
+function renderFilterChips(){
+  const total=reportRows.length;
+  const matched=reportRows.filter(r=>r.status==='Match').length;
+  const notCounted=reportRows.filter(r=>r.status==='Not counted').length;
+  const disc=reportRows.filter(r=>r.status==='Over'||r.status==='Short').length;
+  const notInVis=reportRows.filter(r=>r.status==='Not in VISUAL').length;
+  const cats=[['all','All ('+total+')'],['issues','Discrepancies ('+(disc+notInVis)+')'],['Match','Matched ('+matched+')'],['Not counted','Not counted ('+notCounted+')']];
+  document.getElementById('filters').innerHTML=cats.map(c=>
+    '<span class="chip'+(activeFilter===c[0]?' active':'')+'" role="button" tabindex="0" '+
+    'onclick="setFilter(\''+c[0]+'\')" onkeydown="if(event.key===\'Enter\'||event.key===\' \'){event.preventDefault();this.click();}">'+c[1]+'</span>'
+  ).join('');
+}
+function setFilter(f){activeFilter=f; renderFilterChips(); renderReport();}
+function renderReport(){
+  const tb=document.querySelector('#reporttable tbody'); tb.innerHTML='';
+  let rows=reportRows;
+  if(activeFilter==='issues') rows=rows.filter(r=>r.status==='Over'||r.status==='Short'||r.status==='Not in VISUAL');
+  else if(activeFilter!=='all') rows=rows.filter(r=>r.status===activeFilter);
+  const order={'Short':0,'Over':1,'Not in VISUAL':2,'Not counted':3,'Match':4};
+  rows.slice().sort((a,b)=>order[a.status]-order[b.status]||Math.abs(b.variance||0)-Math.abs(a.variance||0)).forEach(r=>{
+    const vtxt=r.variance===null?'—':(r.variance>0?'+':'')+r.variance;
+    const vcls=r.variance===null?'':(r.variance>0?'var-pos':(r.variance<0?'var-neg':'var-zero'));
+    tb.insertAdjacentHTML('beforeend','<tr><td><b>'+r.part+'</b></td><td>'+(r.phys===null?'—':r.phys)+'</td><td>'+(r.vis===null?'—':r.vis)+'</td><td class="'+vcls+'">'+vtxt+'</td><td><span class="badge '+r.cls+'">'+r.status+'</span></td><td class="muted">'+r.flag+'</td></tr>');
+  });
+}
+function exportCSV(){
+  let csv='Part Number,Physical Count,VISUAL On-Hand,Variance,Status,Review Flag\n';
+  reportRows.forEach(r=>{
+    csv+=[r.part,r.phys===null?'':r.phys,r.vis===null?'':r.vis,r.variance===null?'':r.variance,r.status,'"'+r.flag+'"'].join(',')+'\n';
+  });
+  const a=document.createElement('a');
+  a.href=URL.createObjectURL(new Blob([csv],{type:'text/csv'}));
+  a.download='cycle_count_discrepancy_report_'+new Date().toISOString().slice(0,10)+'.csv';
+  a.click();
+}
+
+/* ---------- demo data (dummy parts) ---------- */
+function loadSample(){
+  headers=['PART_ID','QTY_ON_HAND'];
+  const sys={'BRG-2040-A':14,'BRG-2040-B':0,'BRG-2040-C':8,'VLV-100-1':6,'VLV-100-2':12,'VLV-150-1':5,'FST-M8-25':25,'FST-M8-40':32,'FST-M10-25':18,'FST-M10-40':7,'GSK-050':40,'GSK-075':23,'SPC-2':15,'SPC-4':9};
+  rawRows=Object.entries(sys).map(([p,q])=>[p,q]);
+  system={...sys}; partMeta={}; metaLabels=[];
+  counts={'BRG-2040-A':14,'BRG-2040-B':3,'BRG-2040-C':8,'VLV-100-1':6,'VLV-100-2':12,'VLV-150-1':5,'FST-M8-25':25,'FST-M8-40':23,'FST-M10-40':7,'GSK-050':40,'GSK-075':23,'SPC-2':15,'SPC-4':18};
+  extraParts={'BRG-2040-D':4};
+  document.getElementById('vismeta').textContent='✓ Demo data loaded — '+rawRows.length+' parts';
+  document.getElementById('countmeta').textContent='✓ Sample physical counts pre-filled';
+  document.getElementById('mapping').style.display='none';
+  document.getElementById('step2').style.display='block';
+  renderEntry();
+}
+</script>
+</body>
+</html>
