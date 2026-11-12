@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Inventory Cycle Count Reconciler for Infor VISUAL | Emmanuel Adoga</title>
+<meta name="description" content="A self-built web app that reconciles scanner-less physical inventory counts against an Infor VISUAL on-hand export, with blind counting, automatic discrepancy flagging, and anomaly review.">
+<style>
+  :root{
+    --bg:#f6f3ec;--bg-alt:#efe8d8;--ink:#211f1a;--ink-soft:#5c5648;--line:#e3dcc8;
+    --accent:#2f5d50;--accent-soft:#eef3f1;--accent2:#b5793f;--card:#fffcf5;--radius:10px;--maxw:1080px;
+    font-size:16px;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{font-family:"Segoe UI",-apple-system,BlinkMacSystemFont,"Helvetica Neue",Arial,sans-serif;background:var(--bg);color:var(--ink);line-height:1.6;-webkit-font-smoothing:antialiased;}
+  a{color:inherit;text-decoration:none;}
+  img{max-width:100%;display:block;border-radius:8px;}
+  .wrap{max-width:var(--maxw);margin:0 auto;padding:0 24px;}
+  section{padding:60px 0;}
+  h1,h2,h3{font-weight:600;letter-spacing:-0.01em;}
+
+  header.site-nav{position:sticky;top:0;z-index:50;background:rgba(246,243,236,0.92);backdrop-filter:saturate(180%) blur(8px);border-bottom:1px solid var(--line);}
+  .nav-inner{max-width:var(--maxw);margin:0 auto;padding:14px 24px;display:flex;align-items:center;justify-content:space-between;}
+  .nav-back{font-size:0.86rem;font-weight:600;color:var(--ink-soft);display:flex;align-items:center;gap:6px;}
+  .nav-back:hover{color:var(--accent);}
+  .nav-name{font-weight:700;font-size:0.95rem;}
+
+  .practice-banner{background:#fbf6ec;border-bottom:1px solid #ecdfc2;padding:10px 0;text-align:center;font-size:0.82rem;color:#7a5b1f;}
+
+  .hero{padding:64px 0 40px;border-bottom:1px solid var(--line);}
+  .kicker{font-size:0.78rem;text-transform:uppercase;letter-spacing:0.12em;color:var(--accent);font-weight:700;margin-bottom:14px;}
+  .hero h1{font-size:clamp(1.7rem,4vw,2.4rem);line-height:1.2;margin-bottom:16px;max-width:780px;}
+  .hero p.lede{font-size:1.02rem;color:var(--ink-soft);max-width:720px;}
+  .meta-row{display:flex;flex-wrap:wrap;gap:22px;margin-top:24px;font-size:0.86rem;color:var(--ink-soft);}
+  .meta-row b{color:var(--ink);}
+  .hero-links{display:flex;flex-wrap:wrap;gap:12px;margin-top:26px;}
+  .btn{display:inline-flex;align-items:center;gap:8px;padding:10px 20px;border-radius:999px;font-size:0.86rem;font-weight:600;border:1px solid var(--ink);transition:all .15s;}
+  .btn-primary{background:var(--ink);color:#fff;}
+  .btn-primary:hover{background:var(--accent);border-color:var(--accent);}
+  .btn-ghost{border-color:var(--line);color:var(--ink);}
+  .btn-ghost:hover{border-color:var(--ink);}
+
+  .section-kicker{font-size:0.74rem;text-transform:uppercase;letter-spacing:0.1em;color:var(--accent);font-weight:700;margin-bottom:10px;}
+  h2.section-title{font-size:1.4rem;margin-bottom:18px;}
+  .prose{color:var(--ink-soft);max-width:760px;}
+  .prose p{margin-bottom:14px;}
+
+  .brief-panel{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:24px 26px;margin-top:8px;}
+  .brief-panel h3{font-size:0.95rem;margin-bottom:10px;}
+  .brief-panel ul{margin:0 0 0 20px;color:var(--ink-soft);font-size:0.92rem;}
+  .brief-panel li{margin-bottom:6px;}
+
+  .approach-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:24px;}
+  .approach-step{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:18px;}
+  .approach-step .n{font-size:0.72rem;font-weight:700;color:var(--accent);margin-bottom:6px;}
+  .approach-step h3{font-size:0.92rem;margin-bottom:6px;}
+  .approach-step p{font-size:0.84rem;color:var(--ink-soft);}
+
+  .feature-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:20px;}
+  .feature-card{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:20px 22px;}
+  .feature-card.highlight{border:1px solid var(--accent);background:var(--accent-soft);}
+  .feature-card .ftag{font-size:0.68rem;font-weight:700;text-transform:uppercase;letter-spacing:0.06em;color:var(--accent);background:var(--card);padding:4px 10px;border-radius:999px;display:inline-block;margin-bottom:10px;}
+  .feature-card.highlight .ftag{background:var(--accent);color:#fff;}
+  .feature-card h3{font-size:0.95rem;margin-bottom:8px;}
+  .feature-card p{font-size:0.86rem;color:var(--ink-soft);}
+
+  .stat-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-top:24px;}
+  .stat-card{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:16px;text-align:center;}
+  .stat-card .num{font-size:1.5rem;font-weight:700;color:var(--accent);}
+  .stat-card .num.warn{color:var(--accent2);}
+  .stat-card .label{font-size:0.74rem;color:var(--ink-soft);margin-top:4px;}
+  .stat-card.headline{background:var(--ink);}
+  .stat-card.headline .num{color:#fff;}
+  .stat-card.headline .label{color:#c9c7bf;}
+
+  .callout-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:24px;}
+  .callout{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:20px 22px;}
+  .callout h3{font-size:0.82rem;text-transform:uppercase;letter-spacing:0.05em;color:var(--accent2);margin-bottom:10px;}
+  .callout p{font-size:0.88rem;color:var(--ink-soft);}
+
+  .result-banner{margin-top:36px;background:var(--ink);color:#f4f3ef;border-radius:var(--radius);padding:28px 30px;}
+  .result-banner h3{font-size:1rem;margin-bottom:8px;color:#fff;}
+  .result-banner p{color:#c9c7bf;font-size:0.92rem;}
+
+  .fit-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:24px;}
+  .fit-card{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:20px 22px;}
+  .fit-card h3{font-size:0.9rem;margin-bottom:8px;color:var(--ink);}
+  .fit-card p{font-size:0.86rem;color:var(--ink-soft);}
+
+  footer{padding:36px 0 56px;text-align:center;color:var(--ink-soft);font-size:0.82rem;}
+
+  @media (max-width:900px){
+    .approach-grid{grid-template-columns:1fr;}
+    .feature-grid{grid-template-columns:1fr;}
+    .stat-grid{grid-template-columns:repeat(2,1fr);}
+    .callout-grid{grid-template-columns:1fr;}
+    .fit-grid{grid-template-columns:1fr;}
+  }
+</style>
+</head>
+<body>
+
+<div class="practice-banner">Self-directed build · a standalone tool I scoped as a BA and shipped with Claude as my AI build partner, not a paid client engagement</div>
+
+<header class="site-nav">
+  <div class="nav-inner">
+    <a href="index.html" class="nav-back">← Back to portfolio</a>
+    <span class="nav-name">Emmanuel Adoga</span>
+  </div>
+</header>
+
+<section class="hero">
+  <div class="wrap">
+    <div class="kicker">Self-Directed Build · Inventory &amp; ERP Process Improvement</div>
+    <h1>Inventory Cycle Count Reconciler for Infor VISUAL</h1>
+    <p class="lede">A browser-based tool for warehouses and distribution operations that count inventory without barcode scanners: it takes an Infor VISUAL on-hand export and a set of physical counts, then automatically reconciles the two, flags discrepancies, clusters them by likely root cause, and generates a plain-language summary and recommended action, replacing a manual, line-by-line reconciliation of handwritten count sheets.</p>
+    <div class="meta-row">
+      <span><b>Problem</b> · Manual cycle counting with no scanners, no built-in accuracy control, and slow reconciliation</span>
+      <span><b>Method</b> · Spreadsheet-style count capture, automated variance detection, anomaly flagging</span>
+      <span><b>Built</b> · Requirements and logic designed by me, shipped with Claude as AI build partner, live on GitHub Pages</span>
+    </div>
+    <div class="hero-links">
+      <a href="https://emmanueladoga.github.io/cycle-count-reconciler/" target="_blank" class="btn btn-primary">Try it live →</a>
+      <a href="index.html#projects" class="btn btn-ghost">← Back to case studies</a>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <div class="section-kicker">Brief</div>
+    <h2 class="section-title">Cycle counting without a scanner is a trust problem, not just a data-entry problem</h2>
+    <div class="prose">
+      <p>Businesses running ERP systems like Infor VISUAL depend on accurate on-hand inventory data, but not every warehouse has barcode scanners for cycle counts. Without one, counts get written on paper or typed into a spreadsheet, then reconciled against the system by hand, line by line. That process is slow, and it has a quieter problem underneath it: when the person counting can see the system's expected quantity while they count, it's easy, even unintentionally, to write down what the system says instead of what's actually on the shelf, which defeats the purpose of the count.</p>
+      <p>As the BA who understood exactly where this process broke down, I scoped the fix and used Claude as an AI build partner to ship it, closing both gaps: making the mechanical side of reconciliation fast and error-resistant, and make the count itself trustworthy.</p>
+    </div>
+    <div class="brief-panel">
+      <h3>What it needed to do</h3>
+      <ul>
+        <li>Accept a real Infor VISUAL on-hand export (CSV/XLSX) with flexible column mapping, not a fixed template</li>
+        <li>Let a counter key in physical counts as fast as a spreadsheet, including pasting a column straight from Excel</li>
+        <li>Prevent counts from being copied off the system instead of counted for real</li>
+        <li>Turn the comparison into a discrepancy report a supervisor can act on immediately, not a raw data dump</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<section style="background:var(--bg-alt);">
+  <div class="wrap">
+    <div class="section-kicker">How It Works</div>
+    <h2 class="section-title">Three steps: load, count, reconcile</h2>
+    <div class="approach-grid">
+      <div class="approach-step">
+        <div class="n">01</div>
+        <h3>Load the VISUAL export</h3>
+        <p>Upload the on-hand inventory export as CSV or XLSX and map the part-number and on-hand-quantity columns, or load demo data to try the tool without a real file.</p>
+      </div>
+      <div class="approach-step">
+        <div class="n">02</div>
+        <h3>Enter physical counts</h3>
+        <p>Key counts straight down a spreadsheet-style grid (Enter/↓ to advance, ↑ to go back), paste a column copied from Excel, or upload a separate counts file. Parts not counted are simply left blank.</p>
+      </div>
+      <div class="approach-step">
+        <div class="n">03</div>
+        <h3>Generate the discrepancy report</h3>
+        <p>The tool compares every counted part to VISUAL, calculates variance and count accuracy, flags anomalies, and writes a plain-language summary with a recommended next action.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <div class="section-kicker">Key Features</div>
+    <h2 class="section-title">Built-in controls, not just a comparison</h2>
+    <div class="feature-grid">
+      <div class="feature-card highlight">
+        <span class="ftag">Data integrity control</span>
+        <h3>Blind count mode</h3>
+        <p>VISUAL's on-hand quantities are hidden from the counter during entry, so a count can't be quietly copied from the system instead of physically verified. This is the one control I'd call the design decision the whole tool is really built around: a cycle count is only as good as the counter's incentive to actually count.</p>
+      </div>
+      <div class="feature-card">
+        <span class="ftag">Root cause analysis</span>
+        <h3>Pattern detection</h3>
+        <p>When discrepancies cluster within the same part family, the tool surfaces that pattern directly ("check for a shared root cause: location, receiving process, or recent transactions") instead of leaving a supervisor to spot it manually across dozens of rows.</p>
+      </div>
+      <div class="feature-card">
+        <span class="ftag">Quality check</span>
+        <h3>Anomaly review flags</h3>
+        <p>Rows carrying signs of a transposition, a unit-of-measure mix-up, or an unusually large variance are flagged for recount before any adjustment gets posted back to VISUAL, catching data-entry errors before they become inventory errors.</p>
+      </div>
+      <div class="feature-card">
+        <span class="ftag">Reporting</span>
+        <h3>Plain-language summary &amp; export</h3>
+        <p>Every run generates a short written summary of what was counted, what matched, what didn't, and what to do next, plus a CSV export and a print/PDF-ready discrepancy report for anyone who wasn't in the room for the count.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section style="background:var(--bg-alt);">
+  <div class="wrap">
+    <div class="section-kicker">Sample Run</div>
+    <h2 class="section-title">Discrepancy report on a 20-part demo count</h2>
+    <p class="prose" style="margin-bottom:8px;">Output from a sample cycle count run through the demo dataset, showing the summary stats the tool surfaces immediately after reconciliation.</p>
+
+    <div class="stat-grid">
+      <div class="stat-card"><div class="num">20</div><div class="label">Parts in VISUAL</div></div>
+      <div class="stat-card"><div class="num">19</div><div class="label">Compared</div></div>
+      <div class="stat-card"><div class="num">14</div><div class="label">Matched</div></div>
+      <div class="stat-card"><div class="num warn">5</div><div class="label">Discrepancies</div></div>
+      <div class="stat-card"><div class="num warn">1</div><div class="label">Not counted</div></div>
+      <div class="stat-card"><div class="num warn">2</div><div class="label">Not in VISUAL</div></div>
+      <div class="stat-card headline" style="grid-column:span 2;"><div class="num">73.7%</div><div class="label">Count accuracy</div></div>
+    </div>
+
+    <div class="callout-grid">
+      <div class="callout">
+        <h3>Pattern detected</h3>
+        <p>Discrepancies clustered in the SA-BSN part family (2 issues), flagged for the supervisor to check for a shared root cause rather than treat each variance as an isolated error.</p>
+      </div>
+      <div class="callout">
+        <h3>Anomaly review</h3>
+        <p>6 rows carried review flags for transposition, unit-of-measure, or large-variance patterns, held for recount before any adjustment was approved for posting to VISUAL.</p>
+      </div>
+    </div>
+
+    <div class="result-banner">
+      <h3>Result</h3>
+      <p>19 of 20 parts counted and compared against VISUAL in a single pass, largest variances identified immediately (GSK-NIT-050 at -22, CM-H2-150 at -9, SA-BRC-6 at +9), and a clear recommended action generated automatically: recount flagged rows, investigate the clustered family, then post approved adjustments, turning what would be a manual afternoon of line-by-line checking into a single structured pass.</p>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <div class="section-kicker">Why This Fits</div>
+    <h2 class="section-title">An extension of my real ERP inventory work, built with AI</h2>
+    <div class="fit-grid">
+      <div class="fit-card">
+        <h3>Same root-cause instinct as my client work</h3>
+        <p>At JL13 Concepts, I traced a recurring inventory variance to its root cause and wrote 11 business rules that cut stock variance by 25%. This tool operationalizes that same instinct, cluster discrepancies, don't just list them, so the root cause surfaces on its own instead of requiring a manual deep-dive every cycle.</p>
+      </div>
+      <div class="fit-card">
+        <h3>A controls decision, not just a feature</h3>
+        <p>Blind count mode is a business-process judgment call as much as a UI toggle: it exists because I understood where a manual, non-scanner count process actually breaks down operationally, the same kind of process-integrity thinking behind my BRDs and business rules work.</p>
+      </div>
+      <div class="fit-card">
+        <h3>Requirements that go all the way to production</h3>
+        <p>My BA and ERP work is mostly requirements, configuration, and no-code administration. Here, I used Claude as an AI build partner to carry that same discipline further, turning a requirement I scoped myself into a live, working tool: file handling, comparison logic, and automated reporting, rather than stopping at a spec and handing it off.</p>
+      </div>
+      <div class="fit-card">
+        <h3>Directly relevant to the roles I'm targeting</h3>
+        <p>Inventory accuracy, ERP data integrity, and process improvement are recurring themes across the ERP and business analyst roles I apply for. This project is concrete, demonstrable proof of that exact problem space, not just a bullet point on a resume.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <a href="index.html" class="nav-back" style="justify-content:center;">← Back to Emmanuel Adoga's portfolio</a>
+    <p style="margin-top:14px;">© <span id="year"></span> Emmanuel Adoga</p>
+  </div>
+</footer>
+
+<script>
+  document.getElementById('year').textContent = new Date().getFullYear();
+</script>
+
+</body>
+</html>
